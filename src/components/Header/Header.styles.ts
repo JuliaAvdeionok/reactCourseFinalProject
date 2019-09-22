@@ -2,7 +2,7 @@ import { Theme } from '../../styles';
 
 export default (theme: Theme) => ({
     root: {
-        background: theme.header.background.main,
+        background: theme.header.background.dark,
         color: theme.header.background.contrastText,
         height: theme.header.height,
     },

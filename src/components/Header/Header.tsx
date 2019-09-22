@@ -3,19 +3,21 @@ import withStyles, {WithStyles} from 'react-jss';
 import styles from './Header.styles';
 import {Action, Dispatch} from 'redux';
 import {connect} from 'react-redux';
-import {decreaseCounter, increaseCounter} from '../../store/actions';
+import {decreaseCounter, increaseCounter} from '../../store/counter/actions';
+import {AppState} from '../../store';
+import {signOut} from '../../store/auth';
 
-interface HeaderProps {
+interface StateProps {
     isSignedIn: boolean;
-    onSignOut: () => void;
 }
 
 interface DispatchProps {
     onIncrease: () => void;
     onDecrease: () => void;
+    onSignOut: () => void;
 }
 
-class Header extends React.PureComponent<HeaderProps & DispatchProps & WithStyles<typeof styles>> {
+class Header extends React.PureComponent<StateProps & DispatchProps & WithStyles<typeof styles>> {
     public render() {
         const {classes} = this.props;
         return <header className={classes.root}>
@@ -44,13 +46,20 @@ class Header extends React.PureComponent<HeaderProps & DispatchProps & WithStyle
 
 const WrappedHeader = withStyles(styles)(Header);
 
-const mapDispatchToProps = (dispatch: Dispatch<Action<any>>): DispatchProps => {
+const mapStateToProps = (state: AppState): StateProps => {
     return {
-        onIncrease: () => dispatch(increaseCounter()),
-        onDecrease: () => dispatch(decreaseCounter()),
+        isSignedIn: !!state.auth.token
     };
 };
 
-const ConnectedComponent = connect<undefined, DispatchProps, HeaderProps>(undefined, mapDispatchToProps)(WrappedHeader);
+const mapDispatchToProps = (dispatch: Dispatch<Action<any>>): DispatchProps => {
+    return {
+        onIncrease: () => dispatch(increaseCounter()),
+        onDecrease: () =>  dispatch(decreaseCounter()),
+        onSignOut: () =>  dispatch(signOut()),
+    };
+};
 
-export {ConnectedComponent as Header};
+const ConnectedComponent = connect<StateProps, DispatchProps>(mapStateToProps, mapDispatchToProps)(WrappedHeader);
+
+export { ConnectedComponent as Header };

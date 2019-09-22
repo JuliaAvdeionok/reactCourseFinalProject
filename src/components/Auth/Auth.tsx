@@ -1,24 +1,31 @@
 import {Redirect, RouteComponentProps} from 'react-router';
 import * as React from 'react';
+import {connect} from 'react-redux';
+import {Dispatch} from 'redux';
+import {Action} from '../../store/types';
+import {fetchToken} from '../../store/auth';
 
-interface AuthProps {
-    onSuccess: (token: string) => void;
+interface DispatchProps {
+    onFetchToken: (code: string) => void;
 }
 
-export class Auth extends React.Component<AuthProps & RouteComponentProps> {
+class Auth extends React.Component<DispatchProps & RouteComponentProps> {
     public componentDidMount = async () => {
         if (this.isValid) {
-            this.getToken();
+            const { location } = this.props;
+            this.props.onFetchToken(location.hash.split('=')[1]);
         }
     };
 
     public render() {
         // const {location} = this.props;
-        if (this.isValid) {
+        if (!this.isValid) {
             // const code = location.search.split('=')[1];
-            return <div>
-                <button onClick={this.getToken}>GET TOKEN</button>
-            </div>;
+            // return <div>
+            //     {/*<button onClick={this.getToken}>GET TOKEN</button>*/}
+            // </div>;
+
+            return <h3>in Auth</h3>;
         }
         return <Redirect to={'/'}/>;
     }
@@ -30,7 +37,7 @@ export class Auth extends React.Component<AuthProps & RouteComponentProps> {
             console.log('token:' + token);
             console.log('******');
             console.log('******');
-            this.props.onSuccess(token);
+            // this.props.onSuccess(token);
             this.props.history.push('/');
         } catch (e) {
             throw e;
@@ -45,3 +52,11 @@ export class Auth extends React.Component<AuthProps & RouteComponentProps> {
     }
 
 }
+
+const mapDispatchToProps = (dispatch: Dispatch<Action<string>>) => ({
+    onFetchToken: (code: string) => dispatch(fetchToken(code))
+});
+
+const ConnectedAuth = connect<undefined, DispatchProps>(undefined, mapDispatchToProps)(Auth);
+
+export {ConnectedAuth as Auth};

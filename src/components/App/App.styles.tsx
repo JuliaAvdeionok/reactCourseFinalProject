@@ -4,7 +4,7 @@ export default (theme: Theme) => {
     return {
         ...base(theme),
         root: {
-            backgroundColor: 'aqua',
+            background: theme.header.background.light,
             height: 200
         }
     };
