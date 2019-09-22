@@ -1,20 +1,19 @@
 import { Action } from '../types';
 import {ACTION_TYPES} from './actionsTypes';
+import { Member } from '../../models/Member';
 
 export interface MemberState {
-    value: any;
+    list: Array<Member>;
 }
 
 const INITIAL_STATE = {
-    value: undefined,
+    list: []
 };
 
-export default (appState: MemberState = INITIAL_STATE, action: Action<any>) => {
+export default (appState: MemberState = INITIAL_STATE, action: Action<Array<any>>) => {
     switch (action.type) {
-        case ACTION_TYPES.FETCH_MEMBER:
-            return {...appState, value: action.payload };
-        case ACTION_TYPES.SET_MEMBER:
-            return {...appState, value: action.payload };
+        case ACTION_TYPES.SET_LIST:
+            return {...appState, list: action.payload };
         default:
             return appState;
     }

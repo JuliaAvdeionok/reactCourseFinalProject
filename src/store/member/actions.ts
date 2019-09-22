@@ -1,11 +1,10 @@
-import {ACTION_TYPES} from './actionsTypes';
+import { ACTION_TYPES } from './actionsTypes';
 
-export const fetchMember = (code: string) => ({
-    type: ACTION_TYPES.FETCH_MEMBER,
-    payload: code,
+export const setList = (list: Array<any>) => ({
+    type: ACTION_TYPES.SET_LIST,
+    payload: list,
 });
 
-export const setMember = (token: string) => ({
-    type: ACTION_TYPES.SET_MEMBER,
-    payload: token,
+export const fetchList = () => ({
+    type: ACTION_TYPES.FETCH_LIST,
 });

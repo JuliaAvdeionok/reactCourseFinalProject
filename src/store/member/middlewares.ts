@@ -1,44 +1,32 @@
 import {Store} from 'redux';
 import {ACTION_TYPES} from './actionsTypes';
 import {ApiRequest} from '../../apis/ApiRequest';
-import {setToken} from "../auth";
-import {setMember} from "./actions";
+import { setList } from './actions';
+import { Action } from '../types';
+import { getToken } from '../auth/selectors';
+import { Member } from '../../models/Member';
 
 const key = process.env.REACT_APP_KEY;
 
-const fetchToken = async (code: string) => {
-    try {
-        // console.log('validToken:' + this.state.token);
-        console.log('key:' + key);
-        const AUTH_URL = `https://api.trello.com/1/members/me/boards?key=${key}&token=${code}`;
-        const boards = await ApiRequest.get(AUTH_URL);
-        console.log('^^^^^^^^^^^^^^^^^^^^^^');
-        console.log('^^^^^^^^^^^^^^^^^^^^^^');
-        console.log('boards: ' + JSON.stringify(boards));
-        console.log('^^^^^^^^^^^^^^^^^^^^^^');
-        console.log('^^^^^^^^^^^^^^^^^^^^^^');
-        return boards;
-    } catch (e) {
-        throw e;
-    }
-};
-
-const memberMiddleware = ({getState, dispatch}: Store) => (next: any) => (action) => {
-    const state = getState();
-
-    let token1 = state.auth.token;
-    console.log('&&&&&&&&&&&');
-    console.log('token2: ' + token1);
-    console.log('&&&&&&&&&&&');
-    if (action.type === ACTION_TYPES.FETCH_MEMBER) {
-
-        fetchToken(token1).then((member: any) => {
-            console.log('member: ' + JSON.stringify(member));
-            dispatch(setMember(member));
-        });
+const fetchMember = ({dispatch, getState}: Store) => (next: (action: Action<any>) => void) => async (action: Action<any>) => {
+    if (action.type === ACTION_TYPES.FETCH_LIST) {
+        try {
+            const state = getState();
+            const token = getToken(state);
+            const MEMBER_URL = `members/me/boards?key=${key}&token=${token}`;
+            const response = await ApiRequest.get<Array<Member>>(MEMBER_URL);
+            console.log('^^^^^^^^^^^^^^^^^^^^^^');
+            console.log('^^^^^^^^^^^^^^^^^^^^^^');
+            console.log('boards: ' + JSON.stringify(response));
+            console.log('^^^^^^^^^^^^^^^^^^^^^^');
+            console.log('^^^^^^^^^^^^^^^^^^^^^^');
+            dispatch(setList(response));
+        } catch (e) {
+            throw e;
+        }
     }
 
     next(action);
 };
 
-export const memberMiddlewares = [memberMiddleware];
+export const memberMiddlewares = [fetchMember];

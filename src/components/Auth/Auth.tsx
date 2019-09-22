@@ -3,7 +3,8 @@ import * as React from 'react';
 import {connect} from 'react-redux';
 import {Dispatch} from 'redux';
 import {Action} from '../../store/types';
-import {fetchToken} from '../../store/auth';
+import { setToken } from '../../store/auth';
+import { PATHS } from '../App/App.paths';
 
 interface DispatchProps {
     onFetchToken: (code: string) => void;
@@ -14,6 +15,8 @@ class Auth extends React.Component<DispatchProps & RouteComponentProps> {
         if (this.isValid) {
             const { location } = this.props;
             this.props.onFetchToken(location.hash.split('=')[1]);
+        } else {
+            console.log('FFFFFFFF token not valid');
         }
     };
 
@@ -27,22 +30,8 @@ class Auth extends React.Component<DispatchProps & RouteComponentProps> {
 
             return <h3>in Auth</h3>;
         }
-        return <Redirect to={'/'}/>;
+        return <Redirect to={PATHS.HOME}/>;
     }
-
-    private getToken = async () => {
-        try {
-            const token = this.props.location.hash.split('=')[1];
-            console.log('******');
-            console.log('token:' + token);
-            console.log('******');
-            console.log('******');
-            // this.props.onSuccess(token);
-            this.props.history.push('/');
-        } catch (e) {
-            throw e;
-        }
-    };
 
     get isValid() {
         console.log('+++++++');
@@ -54,7 +43,7 @@ class Auth extends React.Component<DispatchProps & RouteComponentProps> {
 }
 
 const mapDispatchToProps = (dispatch: Dispatch<Action<string>>) => ({
-    onFetchToken: (code: string) => dispatch(fetchToken(code))
+    onFetchToken: (code: string) => dispatch(setToken(code))
 });
 
 const ConnectedAuth = connect<undefined, DispatchProps>(undefined, mapDispatchToProps)(Auth);

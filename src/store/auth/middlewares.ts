@@ -1,13 +1,10 @@
 import {Store} from 'redux';
 import {Action} from '../types';
-import axios from 'axios';
 import {setToken} from './actions';
 import {push} from 'connected-react-router';
 import {ACTION_TYPES} from './actionsTypes';
+import { PATHS } from '../../components/App/App.paths';
 
-const key = process.env.REACT_APP_CLIENT_ID;
-const secret = process.env.REACT_APP_SECRET;
-const redirectUrl = process.env.REACT_APP_REDIRECT_URI;
 
 const fetchToken = async (code: string) => {
     try {
@@ -23,11 +20,9 @@ const fetchMiddleware = ({dispatch, getState}: Store) => (next: (action: Action<
     (action: Action<any>) => {
         if (action.type === ACTION_TYPES.FETCH_TOKEN) {
             const code = action.payload;
-            const state = getState();
-            console.log(state.counter.value);
             fetchToken(code).then((token: string) => {
                 dispatch(setToken(token));
-                dispatch(push('/'));
+                dispatch(push(PATHS.HOME));
             });
         }
 
