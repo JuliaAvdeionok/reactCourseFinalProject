@@ -16,5 +16,8 @@ export default (theme: Theme) => ({
   signInLink: {
     color: theme.palette.primary.text,
     border: ''
+  },
+  boardList: {
+
   }
 });

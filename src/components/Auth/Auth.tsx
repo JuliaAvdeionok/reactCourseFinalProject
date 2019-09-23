@@ -1,8 +1,8 @@
-import {Redirect, RouteComponentProps} from 'react-router';
+import { Redirect, RouteComponentProps } from 'react-router';
 import * as React from 'react';
-import {connect} from 'react-redux';
-import {Dispatch} from 'redux';
-import {Action} from '../../store/types';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { Action } from '../../store/types';
 import { setToken } from '../../store/auth';
 import { PATHS } from '../App/App.paths';
 
@@ -13,10 +13,8 @@ interface DispatchProps {
 class Auth extends React.Component<DispatchProps & RouteComponentProps> {
     public componentDidMount = async () => {
         if (this.isValid) {
-            const { location } = this.props;
+            const {location} = this.props;
             this.props.onFetchToken(location.hash.split('=')[1]);
-        } else {
-            console.log('FFFFFFFF token not valid');
         }
     };
 
@@ -34,9 +32,6 @@ class Auth extends React.Component<DispatchProps & RouteComponentProps> {
     }
 
     get isValid() {
-        console.log('+++++++');
-        console.log('' + this.props.location.hash.split('=')[1] !== '');
-        console.log('+++++++');
         return this.props.location.hash.split('=')[1] !== '';
     }
 
@@ -48,4 +43,4 @@ const mapDispatchToProps = (dispatch: Dispatch<Action<string>>) => ({
 
 const ConnectedAuth = connect<undefined, DispatchProps>(undefined, mapDispatchToProps)(Auth);
 
-export {ConnectedAuth as Auth};
+export { ConnectedAuth as Auth };

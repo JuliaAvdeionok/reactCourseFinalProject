@@ -4,6 +4,9 @@ import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { DispatchProps, StateProps } from './Home.props';
 import { Page } from '../Page';
+import { PATHS } from '../App/App.paths';
+import { Link } from 'react-router-dom';
+import { v4 as uuid } from 'uuid';
 
 class Home extends React.PureComponent<StateProps & DispatchProps & RouteComponentProps & WithStyles<typeof styles>> {
     public state = {
@@ -20,9 +23,21 @@ class Home extends React.PureComponent<StateProps & DispatchProps & RouteCompone
         return <Page title={'CLONE TRELLO|HOME'}>
             <div className={classes.container}>
                 <h2>Hello user</h2>
+                <div className={classes.boardList}>
+                    {this.renderBoardList()}
+                </div>
             </div>
         </Page>;
     }
+
+    private renderBoardList = () => {
+        return this.props.member.map(board => {
+              const link = `${PATHS.BOARD}/${board.id}`;
+              return <Link key={uuid()} to={link}>{board.name}</Link>;
+          }
+        );
+    };
+
 }
 
 const WrappedWithStylesComponent = withStyles(styles)(Home);

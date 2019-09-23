@@ -4,6 +4,7 @@ import * as React from 'react';
 import { Auth } from '../Auth';
 import { SignIn } from '../SingIn';
 import { Home } from '../Home';
+import { Board } from '../Board';
 
 export interface AppRoute {
     path: PATHS;
@@ -21,6 +22,11 @@ export default [
         path: PATHS.HOME,
         render: (props: RouteComponentProps) => <Home {...props}/>,
         exact: true,
+        isProtected: true,
+    },
+    {
+        path: PATHS.BOARD,
+        render: (props: RouteComponentProps) => <Board {...props}/>,
         isProtected: true,
     },
     {

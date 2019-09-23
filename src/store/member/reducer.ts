@@ -1,6 +1,6 @@
 import { Action } from '../types';
 import {ACTION_TYPES} from './actionsTypes';
-import { Member } from '../../models/Member';
+import { Member } from '../../models';
 
 export interface MemberState {
     list: Array<Member>;
