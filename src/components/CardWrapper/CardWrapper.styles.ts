@@ -5,6 +5,7 @@ export default (theme: Theme) => ({
         ...btnResetDefault(),
         backgroundColor: theme.palette.primary.main,
         padding: '12px 15px',
+        margin: '10px 10px',
         textTransform: 'none' as any,
     },
     content: {},

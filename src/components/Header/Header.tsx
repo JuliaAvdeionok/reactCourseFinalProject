@@ -3,7 +3,6 @@ import withStyles, {WithStyles} from 'react-jss';
 import styles from './Header.styles';
 import {Action, Dispatch} from 'redux';
 import {connect} from 'react-redux';
-import {decreaseCounter, increaseCounter} from '../../store/counter/actions';
 import {AppState} from '../../store';
 import {signOut} from '../../store/auth';
 
@@ -12,8 +11,6 @@ interface StateProps {
 }
 
 interface DispatchProps {
-    onIncrease: () => void;
-    onDecrease: () => void;
     onSignOut: () => void;
 }
 
@@ -22,10 +19,6 @@ class Header extends React.PureComponent<StateProps & DispatchProps & WithStyles
         const {classes} = this.props;
         return <header className={classes.root}>
             <div className={classes.content}>
-                <nav>
-                    <button onClick={this.props.onIncrease}>+</button>
-                    <button onClick={this.props.onDecrease}>-</button>
-                </nav>
                 <div>
                     {this.renderAuthControls()}
                 </div>
@@ -54,8 +47,6 @@ const mapStateToProps = (state: AppState): StateProps => {
 
 const mapDispatchToProps = (dispatch: Dispatch<Action<any>>): DispatchProps => {
     return {
-        onIncrease: () => dispatch(increaseCounter()),
-        onDecrease: () =>  dispatch(decreaseCounter()),
         onSignOut: () =>  dispatch(signOut()),
     };
 };

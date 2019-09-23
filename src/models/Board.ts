@@ -218,7 +218,7 @@ export interface LabelNames {
     black: string;
 }
 
-export interface Board {
+export interface BoardModel {
     id: string;
     name: string;
     desc: string;

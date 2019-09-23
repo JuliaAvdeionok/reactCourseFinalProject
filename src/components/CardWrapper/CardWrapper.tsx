@@ -1,15 +1,15 @@
 import React, { ButtonHTMLAttributes } from 'react';
 import withStyles, { WithStyles } from 'react-jss';
 
-import styles from './Card.styles';
+import styles from './CardWrapper.styles';
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
-const Card: React.FC<Props & WithStyles<typeof styles>> = ({children, className, classes, ...props}) => {
+const CardWrapper: React.FC<Props & WithStyles<typeof styles>> = ({children, className, classes, ...props}) => {
     return <button className={classes.root} {...props}>{children}</button>;
 };
 
-const WrappedCard = withStyles(styles)(Card);
+const CardWithStyles = withStyles(styles)(CardWrapper);
 
-export { WrappedCard as Card };
+export { CardWithStyles as CardWrapper };

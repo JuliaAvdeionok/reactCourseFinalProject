@@ -6,7 +6,7 @@ export interface MemberState {
     list: Array<Member>;
 }
 
-const INITIAL_STATE = {
+export const INITIAL_STATE = {
     list: []
 };
 

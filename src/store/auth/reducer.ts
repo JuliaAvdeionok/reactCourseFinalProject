@@ -5,7 +5,7 @@ export interface AuthState {
     token: string | undefined;
 }
 
-const INITIAL_STATE = {
+export const INITIAL_STATE = {
     token: undefined,
 };
 

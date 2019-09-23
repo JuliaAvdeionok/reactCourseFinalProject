@@ -29,4 +29,13 @@ const fetchMiddleware = ({dispatch, getState}: Store) => (next: (action: Action<
         next(action);
     };
 
-export const authMiddlewares = [fetchMiddleware];
+const signOutMiddleware = ({dispatch}: Store) => (next: (action: Action<any>) => void) => (action: Action<any>) => {
+    if (action.type === ACTION_TYPES.SIGN_OUT) {
+        dispatch(setToken(undefined));
+        dispatch(push(PATHS.SIGN_IN));
+    }
+
+    next(action);
+};
+
+export const authMiddlewares = [fetchMiddleware, signOutMiddleware];

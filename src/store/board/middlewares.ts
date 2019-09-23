@@ -1,6 +1,6 @@
 import { Store } from 'redux';
 import { ApiRequest } from '../../apis/ApiRequest';
-import { Board } from '../../models';
+import { BoardModel } from '../../models';
 import { Action } from '../types';
 import { ACTION_TYPES } from './actionsTypes';
 import { getToken } from '../auth/selectors';
@@ -11,7 +11,7 @@ const key = process.env.REACT_APP_KEY;
 const fetchByIdMiddleware = async (id: string, token: string) => {
     try {
         const BOARD_URL = `boards/${id}?fields=all&key=${key}&token=${token}`;
-        const response = await ApiRequest.get<Board>(BOARD_URL);
+        const response = await ApiRequest.get<BoardModel>(BOARD_URL);
         console.log('^^^^^^^^^^^^^^^^^^^^^^');
         console.log('^^^^^^^^^^^^^^^^^^^^^^');
         console.log('response: ' + JSON.stringify(response));
@@ -28,7 +28,7 @@ const fetchMiddleware = ({dispatch, getState}: Store) => (next: (action: Action<
         const code = action.payload;
         const state = getState();
         const token = getToken(state);
-        fetchByIdMiddleware(code, token).then((board: Board) => {
+        fetchByIdMiddleware(code, token).then((board: BoardModel) => {
             dispatch(setBoard(board));
         });
     }

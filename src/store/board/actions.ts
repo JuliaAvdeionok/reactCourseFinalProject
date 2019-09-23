@@ -1,7 +1,7 @@
-import { Board } from '../../models';
+import { BoardModel } from '../../models';
 import { ACTION_TYPES } from './actionsTypes';
 
-export const fetchBoard = (list: Array<Board>) => ({
+export const fetchBoard = (list: Array<BoardModel>) => ({
     type: ACTION_TYPES.FETCH_BOARD,
     payload: list,
 });
@@ -11,7 +11,7 @@ export const fetchBoardById = (id: string) => ({
     payload: id,
 });
 
-export const setBoard = (board: Board) => ({
+export const setBoard = (board: BoardModel) => ({
     type: ACTION_TYPES.SET_BOARD,
     payload: board,
 });

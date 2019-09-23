@@ -2,7 +2,6 @@
 import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
 import { History } from 'history';
 import { connectRouter, routerMiddleware } from 'connected-react-router';
-import counter, { counterMiddlewares, CounterState } from './counter';
 import auth, { authMiddlewares, AuthState } from './auth';
 import member, { memberMiddlewares, MemberState } from './member';
 import board, { boardMiddlewares, BoardState } from './board';
@@ -14,7 +13,6 @@ const composeEnhancers = (process.env.NODE_ENV !== 'production' && window.__REDU
   : compose;
 
 export interface AppState {
-    counter: CounterState;
     auth: AuthState;
     member: MemberState;
     board: BoardState;
@@ -22,7 +20,6 @@ export interface AppState {
 
 const rootReducer = (history: History) => combineReducers(
   {
-      counter,
       auth,
       member,
       board,
@@ -38,7 +35,6 @@ export default (history) => {
         // @ts-ignore
         applyMiddleware(
           routerMiddleware(history),
-          ...counterMiddlewares,
           ...authMiddlewares,
           ...memberMiddlewares,
           ...boardMiddlewares,

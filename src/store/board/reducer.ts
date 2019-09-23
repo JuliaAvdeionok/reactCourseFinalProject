@@ -1,18 +1,18 @@
-import { Board } from '../../models';
+import { BoardModel } from '../../models';
 import { Action } from '../types';
 import { ACTION_TYPES } from './actionsTypes';
 
 export interface BoardState {
     id: string;
-    board: Board;
+    board: BoardModel;
 }
 
-const INITIAL_STATE = {
+export const INITIAL_STATE = {
     id: undefined,
     board: undefined
 };
 
-export default (appState: BoardState = INITIAL_STATE, action: Action<Board>) => {
+export default (appState: BoardState = INITIAL_STATE, action: Action<BoardModel>) => {
     switch (action.type) {
         case ACTION_TYPES.FETCH_BOARD_BY_ID:
             return {...appState, id: action.payload };

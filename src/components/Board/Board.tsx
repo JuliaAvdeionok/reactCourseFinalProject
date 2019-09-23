@@ -8,21 +8,23 @@ import { Action } from '../../store/types';
 import { connect } from 'react-redux';
 import { fetchBoardById } from '../../store/board';
 import { AppState } from '../../store';
+import { BoardModel } from '../../models';
+import { getBoardName } from '../../store/board/selectors';
 
-export interface HomeProps {
-}
-
-export interface StateProps {
-    board: Board;
+interface StateProps {
+    id: string;
+    board: BoardModel;
+    boardName: string;
 }
 
 interface DispatchProps {
     onFetchBoard: (boardId: string) => void;
 }
 
-class Board extends React.PureComponent<HomeProps & StateProps & DispatchProps & RouteComponentProps & WithStyles<typeof styles>> {
+class Board extends React.PureComponent<StateProps & DispatchProps & RouteComponentProps & WithStyles<typeof styles>> {
     public state = {
         board: undefined,
+        boardName: undefined
     };
 
     public componentDidMount = async () => {
@@ -38,28 +40,27 @@ class Board extends React.PureComponent<HomeProps & StateProps & DispatchProps &
         return this.props.location.hash.split('=')[1] !== '';
     }
 
-
     public render() {
-        const {location} = this.props;
-        console.log('LOCATION' + JSON.stringify(location));
+        const {boardName} = this.props;
         return <Page title={'CLONE TRELLO|BOARD'}>
-            <h2>Hello in board!</h2>
+            <h2>{boardName}</h2>
         </Page>;
     }
 }
 
 const mapStateToProps = (state: AppState): StateProps => {
     return {
-        board: state.board.board
+        id: state.board.id,
+        board: state.board.board,
+        boardName: getBoardName(state)
     };
 };
-
 const mapDispatchToProps = (dispatch: Dispatch<Action<string>>) => ({
     onFetchBoard: (boardId: string) => dispatch(fetchBoardById(boardId))
 });
 
 const WrappedWithStylesComponent = withStyles(styles)(Board);
 
-const ConnectedComponent = connect<StateProps, DispatchProps, HomeProps>(mapStateToProps, mapDispatchToProps)(WrappedWithStylesComponent);
+const ConnectedComponent = connect<StateProps, DispatchProps>(mapStateToProps, mapDispatchToProps)(WrappedWithStylesComponent);
 
 export { ConnectedComponent as Board };

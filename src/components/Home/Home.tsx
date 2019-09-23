@@ -7,6 +7,7 @@ import { Page } from '../Page';
 import { PATHS } from '../App/App.paths';
 import { Link } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
+import { CardWrapper } from '../CardWrapper';
 
 class Home extends React.PureComponent<StateProps & DispatchProps & RouteComponentProps & WithStyles<typeof styles>> {
     public state = {
@@ -33,7 +34,9 @@ class Home extends React.PureComponent<StateProps & DispatchProps & RouteCompone
     private renderBoardList = () => {
         return this.props.member.map(board => {
               const link = `${PATHS.BOARD}/${board.id}`;
-              return <Link key={uuid()} to={link}>{board.name}</Link>;
+              return <CardWrapper key={uuid()}>
+                  <Link key={uuid()} to={link}>{board.name}</Link>;
+              </CardWrapper>;
           }
         );
     };
