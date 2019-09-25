@@ -12,11 +12,6 @@ const fetchByIdMiddleware = async (id: string, token: string) => {
     try {
         const BOARD_URL = `boards/${id}?fields=all&key=${key}&token=${token}`;
         const response = await ApiRequest.get<BoardModel>(BOARD_URL);
-        console.log('^^^^^^^^^^^^^^^^^^^^^^');
-        console.log('^^^^^^^^^^^^^^^^^^^^^^');
-        console.log('response: ' + JSON.stringify(response));
-        console.log('^^^^^^^^^^^^^^^^^^^^^^');
-        console.log('^^^^^^^^^^^^^^^^^^^^^^');
         return response;
     } catch (e) {
         throw e;

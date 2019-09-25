@@ -6,12 +6,21 @@ import { Route, Switch } from 'react-router';
 import styles from './App.styles';
 import routes, { AppRoute } from './App.routes';
 import { ProtectedRoute } from '../ProtectedRoute';
+import { Dispatch } from 'redux';
+import { Action } from '../../store/types';
+import { fetchIsSingIn } from '../../store/auth';
+import { connect } from 'react-redux';
 
-interface State {
+interface DispatchProps {
+    onCheckLocalStorage: () => void;
 }
 
-class App extends React.Component<WithStyles<typeof styles>, State> {
-    public state = {};
+class App extends React.Component<DispatchProps & WithStyles<typeof styles>> {
+
+    constructor(props) {
+        super(props);
+        this.props.onCheckLocalStorage();
+    }
 
     public render() {
         const {classes} = this.props;
@@ -26,46 +35,16 @@ class App extends React.Component<WithStyles<typeof styles>, State> {
 
     }
 
-    // private renderNotfound = () => {
-    //     return <h2>Not found!</h2>;
-    // };
-    //
-    // private renderRedirect = () => {
-    //     return <Redirect to={'/404'}/>;
-    // };
-    //
-    // private renderHome = (props: RouteComponentProps) => {
-    //     return <Home {...props}/>;
-    // };
-    //
-    // private renderAuth = (props: RouteComponentProps) => {
-    //     return <Auth {...props}/>;
-    // };
-
-    // private get isSignedIn(): boolean {
-    // console.log('!!this.state.token: ' + !!this.state.token);
-    // console.log('!!this.state.token: ' + this.state.token);
-    // return !!this.state.token;
-    // }
-
-    // private signOut = () => {
-    //     this.setState((state) => ({...state, token: undefined}));
-    // removeLocalStorage(STORAGE_KEY);
-    // };
-    //
-    // private saveToken = (token: string) => {
-    //     this.setState((state: State) => ({...state, token}));
-    // setLocalStorage(STORAGE_KEY, JSON.stringify(token));
-    // };
-    //
-    // private readToken = () => {
-    // const token = JSON.parse(getLocalStorage(STORAGE_KEY));
-    // console.log('token' + token);
-    // this.setState((state: State) => ({...state, token}));
-    // };
-
 }
+
+const mapDispatchToProps = (dispatch: Dispatch<Action<any>>): DispatchProps => {
+    return {
+        onCheckLocalStorage: () => dispatch(fetchIsSingIn()),
+    };
+};
 
 const WrappedApp = withStyles(styles)(App);
 
-export { WrappedApp as App };
+const ConnectedApp = connect<undefined, DispatchProps>(undefined, mapDispatchToProps)(WrappedApp);
+
+export { ConnectedApp as App };

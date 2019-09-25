@@ -19,13 +19,7 @@ class Auth extends React.Component<DispatchProps & RouteComponentProps> {
     };
 
     public render() {
-        // const {location} = this.props;
         if (!this.isValid) {
-            // const code = location.search.split('=')[1];
-            // return <div>
-            //     {/*<button onClick={this.getToken}>GET TOKEN</button>*/}
-            // </div>;
-
             return <h3>in Auth</h3>;
         }
         return <Redirect to={PATHS.HOME}/>;

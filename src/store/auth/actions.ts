@@ -13,3 +13,7 @@ export const setToken = (token: string) => ({
 export const signOut = () => ({
     type: ACTION_TYPES.SIGN_OUT
 });
+
+export const fetchIsSingIn = () => ({
+    type: ACTION_TYPES.FETCH_IS_SING_IN
+});

@@ -5,7 +5,7 @@ export default (theme: Theme) => {
         ...base(theme),
         root: {
             background: theme.header.background.light,
-            height: 200
+            minHeight: '100vh'
         }
     };
 };

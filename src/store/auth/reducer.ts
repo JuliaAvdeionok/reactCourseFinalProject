@@ -13,6 +13,8 @@ export default (state: AuthState = INITIAL_STATE, action: Action<string>) => {
     switch (action.type) {
         case ACTION_TYPES.SET_TOKEN:
             return {...state, token: action.payload};
+        case ACTION_TYPES.FETCH_IS_SING_IN:
+            return {...state};
         case ACTION_TYPES.CLEAR_TOKEN:
             return {...INITIAL_STATE};
         default:

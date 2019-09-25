@@ -5,6 +5,7 @@ import {Action, Dispatch} from 'redux';
 import {connect} from 'react-redux';
 import {AppState} from '../../store';
 import {signOut} from '../../store/auth';
+import { getIsSignedIn } from '../../store/auth/selectors';
 
 interface StateProps {
     isSignedIn: boolean;
@@ -28,6 +29,7 @@ class Header extends React.PureComponent<StateProps & DispatchProps & WithStyles
 
     private renderAuthControls = () => {
         if (this.props.isSignedIn) {
+            console.log('render in header');
             return <>
                 <button onClick={this.props.onSignOut}>Sign Out</button>
             </>;
@@ -41,7 +43,7 @@ const WrappedHeader = withStyles(styles)(Header);
 
 const mapStateToProps = (state: AppState): StateProps => {
     return {
-        isSignedIn: !!state.auth.token
+        isSignedIn: getIsSignedIn(state)
     };
 };
 

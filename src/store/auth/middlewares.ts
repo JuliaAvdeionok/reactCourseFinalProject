@@ -1,41 +1,52 @@
-import {Store} from 'redux';
-import {Action} from '../types';
-import {setToken} from './actions';
-import {push} from 'connected-react-router';
-import {ACTION_TYPES} from './actionsTypes';
+import { Store } from 'redux';
+import { Action } from '../types';
+import { setToken } from './actions';
+import { push } from 'connected-react-router';
+import { ACTION_TYPES } from './actionsTypes';
 import { PATHS } from '../../components/App/App.paths';
+import { getLocalStorage, localStorageExists, removeLocalStorage, setLocalStorage } from '../../util/storages';
+import { getIsSignedIn } from './selectors';
 
-
-const fetchToken = async (code: string) => {
-    try {
-        // const AUTH_URL = `https://unsplash.com/oauth/token?client_id=${key}&client_secret=${secret}&redirect_uri=${redirectUrl}&code=${code}&grant_type=${'authorization_code'}`;
-        // const response = await axios.post<string>(AUTH_URL);
-        return code;
-    } catch (e) {
-        throw e;
-    }
-};
-
-const fetchMiddleware = ({dispatch, getState}: Store) => (next: (action: Action<any>) => void) =>
-    (action: Action<any>) => {
-        if (action.type === ACTION_TYPES.FETCH_TOKEN) {
-            const code = action.payload;
-            fetchToken(code).then((token: string) => {
-                dispatch(setToken(token));
-                dispatch(push(PATHS.HOME));
-            });
-        }
-
-        next(action);
-    };
-
+const STORAGE_KEY = process.env.REACT_APP_STORAGE_KEY;
 const signOutMiddleware = ({dispatch}: Store) => (next: (action: Action<any>) => void) => (action: Action<any>) => {
     if (action.type === ACTION_TYPES.SIGN_OUT) {
         dispatch(setToken(undefined));
+        removeLocalStorage(STORAGE_KEY);
         dispatch(push(PATHS.SIGN_IN));
     }
 
     next(action);
 };
 
-export const authMiddlewares = [fetchMiddleware, signOutMiddleware];
+const isSignInMiddleware = ({dispatch, getState}: Store) => (next: (action: Action<any>) => void) => {
+    return (action: Action<any>) => {
+        if (action.type === ACTION_TYPES.FETCH_IS_SING_IN) {
+
+            const state = getState();
+            const isSignedIn = getIsSignedIn(state);
+
+            if (!isSignedIn && localStorageExists(STORAGE_KEY)) {
+                const token = JSON.parse(getLocalStorage(STORAGE_KEY));
+                console.log('in FETCH_IS_SING_IN token: ' + !!token);
+                dispatch(setToken(token));
+            }
+        }
+
+        next(action);
+    };
+};
+
+const setTokenMiddleware = ({dispatch}: Store) => (next: (action: Action<any>) => void) => (action: Action<any>) => {
+    if (action.type === ACTION_TYPES.SET_TOKEN) {
+        const token = action.payload;
+        console.log('STORAGE_KEY:' + STORAGE_KEY);
+        if (!localStorageExists(STORAGE_KEY)) {
+            setLocalStorage(STORAGE_KEY, JSON.stringify(token));
+        }
+
+    }
+
+    next(action);
+};
+
+export const authMiddlewares = [ signOutMiddleware, isSignInMiddleware, setTokenMiddleware ];
