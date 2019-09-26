@@ -1,6 +1,7 @@
 import { PaletteColor } from './theme.styles';
 
 export const green: PaletteColor = {
+  base: '#fafafa',
   light: '#76d275',
   main: '#43a047',
   dark: '#00701a',
@@ -9,6 +10,7 @@ export const green: PaletteColor = {
 };
 
 export const pink: PaletteColor = {
+  base: '#fafafa',
   light: '#fa5788',
   main: '#c2185b',
   dark: '#8c0032',
@@ -17,6 +19,7 @@ export const pink: PaletteColor = {
 };
 
 export const red: PaletteColor = {
+  base: '#fafafa',
   light: '#ff5131',
   main: '#d50000',
   dark: '#9b0000',
@@ -25,6 +28,7 @@ export const red: PaletteColor = {
 };
 
 export const blue: PaletteColor = {
+  base: '#fafafa',
   light: '#63a4ff',
   main: '#1976d2',
   dark: '#004ba0',
@@ -33,6 +37,7 @@ export const blue: PaletteColor = {
 };
 
 export const black: PaletteColor = {
+  base: '#fafafa',
   light: '#171717',
   main: '#0a0a0a',
   dark: '#000',
@@ -41,6 +46,7 @@ export const black: PaletteColor = {
 };
 
 export const sea: PaletteColor = {
+  base: '#fafafa',
   light: '#f5e1da',
   main: '#f1f1f1',
   dark: '#476268',

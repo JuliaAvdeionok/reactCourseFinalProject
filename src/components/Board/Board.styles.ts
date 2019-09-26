@@ -8,6 +8,8 @@ export default (theme: Theme) => ({
         maxWidth: 960,
         margin: '0 auto'
     },
+    grid: {
+    },
     signInLinkWrapper: {
         width: '100%',
         display: 'flex',
@@ -18,6 +20,8 @@ export default (theme: Theme) => ({
         border: ''
     },
     boardList: {
-
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(300px,1fr))',
+        gridGap: '0 10px',
     }
 });

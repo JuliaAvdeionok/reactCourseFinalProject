@@ -11,5 +11,14 @@ export default (theme: Theme) => ({
     content: {},
     disabled: {
         boxShadow: 'none !important'
+    },
+    listWrapper: {
+        display: 'block',
+        padding: '12px 15px',
+        margin: '10px 10px',
+        borderRadius: theme.card.boarderRadius,
+        backgroundColor: theme.palette.primary.main
+    },
+    cardList: {
     }
 });

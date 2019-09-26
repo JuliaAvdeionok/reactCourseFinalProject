@@ -11,5 +11,10 @@ export default (theme: Theme) => ({
     content: {},
     disabled: {
         boxShadow: 'none !important'
+    },
+    cardWrapper: {
+        backgroundColor: theme.palette.primary.base,
+        padding: '12px 15px',
+        margin: '10px 10px'
     }
 });

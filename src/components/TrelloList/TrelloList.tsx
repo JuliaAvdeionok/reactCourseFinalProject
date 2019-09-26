@@ -1,54 +1,57 @@
 import * as React from 'react';
-import { RouteComponentProps } from 'react-router';
 import withStyles, { WithStyles } from 'react-jss';
-import styles from '../Header/Header.styles';
+import styles from '../TrelloList/TrelloList.styles';
+import { connect } from 'react-redux';
 import { CardModel } from '../../models/CardModel';
+import { AppState } from '../../store';
+import { getCardListById } from '../../store/trelloList/selectors';
+import { v4 as uuid } from 'uuid';
+import { Card } from '../Card';
+
+export interface TrelloListProps {
+    id: string;
+    name: string;
+}
 
 interface StateProps {
-    card: CardModel;
+    cardList: Array<CardModel>;
 }
 
-interface DispatchProps {
+// interface DispatchProps {
+//     onFetchTrelloMap: () => void;
+// }
 
-}
-
-class TrelloList extends React.PureComponent<StateProps & DispatchProps & RouteComponentProps & WithStyles<typeof styles>> {
-
-    public state = {
-        card: undefined
-    };
-
-    public componentDidMount = async () => {
-        // this.props.onFetchBoard(board_id);
-    };
-
-    // get isValid() {
-    // return this.props.location.hash.split('=')[1] !== '';
-    // }
+class TrelloList extends React.PureComponent<TrelloListProps & StateProps & WithStyles<typeof styles>> {
 
     public render() {
-        return <h2>List</h2>;
-        // const {boardName} = this.props;
-        // return <Page title={'CLONE TRELLO|BOARD'}>
-        // <h2>{boardName}</h2>
-        // </Page>;
+        const {classes, cardList} = this.props;
+        return <div className={classes.listWrapper}>
+            <h2> {this.props.name} </h2>
+            <div className={classes.cardList}>
+                {
+                    cardList.map(item => {
+                        return <Card key={uuid()} cardItem={item}/>;
+                    })
+                }
+            </div>
+        </div>;
     }
+
 }
 
-// const mapStateToProps = (state: AppState): StateProps => {
-//     return {
-// id: state.board.id,
-// board: state.board.board,
-// boardName: getBoardName(state)
-// };
-// };
-// const mapDispatchToProps = (dispatch: Dispatch<Action<string>>) => ({
-//     onFetchBoard: (boardId: string) => dispatch(fetchBoardById(boardId))
+const mapStateToProps = (state: AppState, ownProps: TrelloListProps): StateProps => {
+    return {
+        cardList: getCardListById(state, ownProps)
+    };
+};
+
+// const mapDispatchToProps = (dispatch: Dispatch<Action<any>>) => ({
+//
 // });
 
 const WrappedWithStylesComponent = withStyles(styles)(TrelloList);
 
-// const ConnectedComponent = connect<StateProps, DispatchProps>(mapStateToProps, mapDispatchToProps)(WrappedWithStylesComponent);
+const ConnectedComponent =
+  connect(mapStateToProps)(WrappedWithStylesComponent);
 
-export { WrappedWithStylesComponent as TrelloList };
-
+export { ConnectedComponent as TrelloList };

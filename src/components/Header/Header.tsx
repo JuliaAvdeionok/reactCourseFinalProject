@@ -29,7 +29,6 @@ class Header extends React.PureComponent<StateProps & DispatchProps & WithStyles
 
     private renderAuthControls = () => {
         if (this.props.isSignedIn) {
-            console.log('render in header');
             return <>
                 <button onClick={this.props.onSignOut}>Sign Out</button>
             </>;

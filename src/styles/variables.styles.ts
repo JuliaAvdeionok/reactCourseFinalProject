@@ -7,3 +7,5 @@ export const fontSizeSmall = '12px';
 export const fontSizeLarge = '18px';
 export const baseFontFamily = ['SofiaPro', 'sans-serif'];
 export const contentPaddingTop = 70;
+
+export const boarderRadius = 10;

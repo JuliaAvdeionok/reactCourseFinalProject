@@ -1,7 +1,8 @@
-import {sea} from './colors.styles';
-import {baseFontFamily, fontSizeBase} from './variables.styles';
+import { sea } from './colors.styles';
+import { baseFontFamily, boarderRadius, fontSizeBase } from './variables.styles';
 
 export interface PaletteColor {
+    base: string;
     light: string;
     main: string;
     dark: string;
@@ -27,6 +28,10 @@ export interface Theme {
         background: PaletteColor,
         height: number
     };
+    card: {
+        boarderRadius: number,
+        background: PaletteColor
+    };
 }
 
 export const theme: Theme = {
@@ -44,5 +49,9 @@ export const theme: Theme = {
     header: {
         background: sea,
         height: 60
+    },
+    card: {
+        boarderRadius: boarderRadius,
+        background: sea
     }
 };

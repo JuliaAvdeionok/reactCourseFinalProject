@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Redirect, Route, RouteProps } from 'react-router';
+import { Redirect, Route } from 'react-router';
 import { PATHS } from '../App/App.paths';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -22,9 +22,6 @@ class ProtectedRoute extends React.Component<StateProps & DispatchProps> {
     };
 
     public render() {
-        console.log('render in ProtectedRoute');
-        this.props.fetchIsSignedIn();
-        console.log('this.props.isSignedIn:' + this.props.isSignedIn);
         return this.props.isSignedIn ? <Route {...this.props} /> : <Redirect to={PATHS.SIGN_IN}/>;
     }
 }

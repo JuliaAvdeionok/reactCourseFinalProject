@@ -10,7 +10,7 @@ export interface CardState {
 export const INITIAL_STATE = {
     id: undefined,
     cardList: [],
-    cardMap: new Map<string, Array<CardModel>>()
+    cardMap: undefined
 };
 
 export default (appState: CardState = INITIAL_STATE, action: Action<Array<CardModel>>) => {

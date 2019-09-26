@@ -1,4 +1,4 @@
-export interface TrelloList {
+export interface TrelloListModel {
     id: string;
     name: string;
     closed: boolean;

@@ -15,11 +15,6 @@ const fetchMember = ({dispatch, getState}: Store) => (next: (action: Action<any>
             const token = getToken(state);
             const MEMBER_URL = `members/me/boards?key=${key}&token=${token}`;
             const response = await ApiRequest.get<Array<Member>>(MEMBER_URL);
-            console.log('^^^^^^^^^^^^^^^^^^^^^^');
-            console.log('^^^^^^^^^^^^^^^^^^^^^^');
-            console.log('boards: ' + JSON.stringify(response));
-            console.log('^^^^^^^^^^^^^^^^^^^^^^');
-            console.log('^^^^^^^^^^^^^^^^^^^^^^');
             dispatch(setList(response));
         } catch (e) {
             throw e;

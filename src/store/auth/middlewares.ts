@@ -24,10 +24,8 @@ const isSignInMiddleware = ({dispatch, getState}: Store) => (next: (action: Acti
 
             const state = getState();
             const isSignedIn = getIsSignedIn(state);
-
             if (!isSignedIn && localStorageExists(STORAGE_KEY)) {
                 const token = JSON.parse(getLocalStorage(STORAGE_KEY));
-                console.log('in FETCH_IS_SING_IN token: ' + !!token);
                 dispatch(setToken(token));
             }
         }
@@ -39,11 +37,9 @@ const isSignInMiddleware = ({dispatch, getState}: Store) => (next: (action: Acti
 const setTokenMiddleware = ({dispatch}: Store) => (next: (action: Action<any>) => void) => (action: Action<any>) => {
     if (action.type === ACTION_TYPES.SET_TOKEN) {
         const token = action.payload;
-        console.log('STORAGE_KEY:' + STORAGE_KEY);
         if (!localStorageExists(STORAGE_KEY)) {
             setLocalStorage(STORAGE_KEY, JSON.stringify(token));
         }
-
     }
 
     next(action);
