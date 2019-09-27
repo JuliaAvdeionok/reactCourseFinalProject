@@ -18,6 +18,10 @@ export default (appState: BoardState = INITIAL_STATE, action: Action<BoardModel>
             return {...appState, id: action.payload };
         case ACTION_TYPES.SET_BOARD:
             return {...appState, board: action.payload };
+        case ACTION_TYPES.ADD_BOARD:
+            return {...appState };
+        case ACTION_TYPES.DEL_BOARD:
+            return {...appState, id: action.payload };
         default:
             return appState;
     }

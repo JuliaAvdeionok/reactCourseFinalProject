@@ -1,5 +1,5 @@
 import { sea } from './colors.styles';
-import { baseFontFamily, boarderRadius, fontSizeBase } from './variables.styles';
+import { baseFontFamily, boarderRadius, fontSizeBase, fontSizeSmall } from './variables.styles';
 
 export interface PaletteColor {
     base: string;
@@ -23,6 +23,7 @@ export interface Theme {
     typo: {
         fontFamily: string;
         fontSize: string;
+        buttonText: string;
     };
     header: {
         background: PaletteColor,
@@ -44,7 +45,8 @@ export const theme: Theme = {
     },
     typo: {
         fontFamily: baseFontFamily.join(','),
-        fontSize: fontSizeBase
+        fontSize: fontSizeBase,
+        buttonText: fontSizeSmall
     },
     header: {
         background: sea,

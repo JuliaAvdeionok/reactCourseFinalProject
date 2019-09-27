@@ -2,11 +2,12 @@ import { Theme } from '../../styles';
 
 export default (theme: Theme) => ({
   root: {
-    background: theme.palette.primary.main
+    background: theme.palette.primary.main,
   },
   container: {
     maxWidth: 960,
-    margin: '0 auto'
+    margin: '0 auto',
+    padding: '10px 10px'
   },
   signInLinkWrapper: {
     width: '100%',
@@ -19,5 +20,8 @@ export default (theme: Theme) => ({
   },
   boardList: {
 
+  },
+  addForm: {
+    width: 300
   }
 });

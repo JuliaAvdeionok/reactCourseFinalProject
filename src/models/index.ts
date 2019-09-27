@@ -1,2 +1,2 @@
 export * from './Member';
-export * from './Board';
+export * from './BoardModel';

@@ -2,11 +2,11 @@ import * as React from 'react';
 import withStyles, { WithStyles } from 'react-jss';
 import styles from '../Board/Board.styles';
 import { Page } from '../Page';
-import { RouteComponentProps } from 'react-router';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Dispatch } from 'redux';
 import { Action } from '../../store/types';
 import { connect } from 'react-redux';
-import { fetchBoardById } from '../../store/board';
+import { delBoard, fetchBoardById } from '../../store/board';
 import { AppState } from '../../store';
 import { BoardModel, } from '../../models';
 import { getBoardName } from '../../store/board/selectors';
@@ -16,6 +16,7 @@ import { fetchCardList, fetchCardMap } from '../../store/card';
 import { TrelloList } from '../TrelloList';
 import { TrelloListModel } from '../../models/TrelloListModel';
 import { v4 as uuid } from 'uuid';
+import { Button } from '../Button';
 
 interface StateProps {
     id: string;
@@ -30,6 +31,7 @@ interface DispatchProps {
     onFetchCardList: (boardId: string) => void;
     onFetchTrelloList: (boardId: string) => void;
     onFetchTrelloMap: () => void;
+    onDelBoard: (boardId: string) => void;
 }
 
 class Board extends React.PureComponent<StateProps & DispatchProps & RouteComponentProps & WithStyles<typeof styles>> {
@@ -59,7 +61,10 @@ class Board extends React.PureComponent<StateProps & DispatchProps & RouteCompon
         const {boardName, classes, trelloListArray} = this.props;
         return <Page title={'CLONE TRELLO|BOARD'}>
             <div className={classes.grid}>
-                <h2>{boardName}</h2>
+                <div>
+                    <h2>{boardName}</h2>
+                    <Button onClick={this.deleteBoard}>Detele this board</Button>
+                </div>
                 <div className={classes.boardList}>
                     {
                         trelloListArray.map(item => {
@@ -76,15 +81,10 @@ class Board extends React.PureComponent<StateProps & DispatchProps & RouteCompon
         </Page>;
     }
 
-    // private renderTrelloListArray = () => {
-    //     return this.props.trelloListArray.map(list => {
-    //         const {id} = list;
-    //         console.log('44444' + typeof list.id);
-    //         return (<>
-    //             <TrelloList key={uuid()} id={list.id}/>
-    //         </>);
-    //     )
-    // };
+    private deleteBoard = () => {
+        const {id} = this.props;
+        this.props.onDelBoard(id);
+    };
 }
 
 const mapStateToProps = (state: AppState): StateProps => {
@@ -101,12 +101,17 @@ const mapDispatchToProps = (dispatch: Dispatch<Action<string>>) => ({
     onFetchBoard: (boardId: string) => dispatch(fetchBoardById(boardId)),
     onFetchCardList: (boardId: string) => dispatch(fetchCardList(boardId)),
     onFetchTrelloList: (boardId: string) => dispatch(fetchTrelloList(boardId)),
-    onFetchTrelloMap: () => dispatch(fetchCardMap())
+    onFetchTrelloMap: () => dispatch(fetchCardMap()),
+    onDelBoard: (boardId: string) => dispatch(delBoard(boardId)),
 });
 
 const WrappedWithStylesComponent = withStyles(styles)(Board);
 
+// const ConnectedComponent =
+//   connect<StateProps, DispatchProps>(mapStateToProps, mapDispatchToProps)(WrappedWithStylesComponent);
+
+
 const ConnectedComponent =
-  connect<StateProps, DispatchProps>(mapStateToProps, mapDispatchToProps)(WrappedWithStylesComponent);
+  withRouter(connect<StateProps, DispatchProps, RouteComponentProps>(mapStateToProps, mapDispatchToProps)(WrappedWithStylesComponent) as any);
 
 export { ConnectedComponent as Board };

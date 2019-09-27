@@ -15,6 +15,7 @@ export default (theme: Theme) => ({
     cardWrapper: {
         backgroundColor: theme.palette.primary.base,
         padding: '12px 15px',
-        margin: '10px 10px'
+        margin: '10px 10px',
+        boxShadow: '1px 1px 2px 2px rgba(209,205,209,0.68)'
     }
 });

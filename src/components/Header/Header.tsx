@@ -1,11 +1,15 @@
 import * as React from 'react';
-import withStyles, {WithStyles} from 'react-jss';
+import withStyles, { WithStyles } from 'react-jss';
 import styles from './Header.styles';
-import {Action, Dispatch} from 'redux';
-import {connect} from 'react-redux';
-import {AppState} from '../../store';
-import {signOut} from '../../store/auth';
+import { Action, Dispatch } from 'redux';
+import { connect } from 'react-redux';
+import { AppState } from '../../store';
+import { signOut } from '../../store/auth';
 import { getIsSignedIn } from '../../store/auth/selectors';
+import { PATHS } from '../App/App.paths';
+import { Link } from 'react-router-dom';
+import { v4 as uuid } from 'uuid';
+import { Button } from '../Button';
 
 interface StateProps {
     isSignedIn: boolean;
@@ -28,10 +32,17 @@ class Header extends React.PureComponent<StateProps & DispatchProps & WithStyles
     }
 
     private renderAuthControls = () => {
+        const link = `${PATHS.HOME}`;
+        const {classes} = this.props;
         if (this.props.isSignedIn) {
-            return <>
-                <button onClick={this.props.onSignOut}>Sign Out</button>
-            </>;
+            return <div className={classes.header}>
+                <div>
+                    <Button className={classes.root} ><Link key={uuid()} to={link}>Boards</Link></Button>
+                </div>
+                <div>
+                    <Button onClick={this.props.onSignOut}>Sign Out</Button>
+                </div>
+            </div>;
         } else {
             return null;
         }
@@ -48,7 +59,7 @@ const mapStateToProps = (state: AppState): StateProps => {
 
 const mapDispatchToProps = (dispatch: Dispatch<Action<any>>): DispatchProps => {
     return {
-        onSignOut: () =>  dispatch(signOut()),
+        onSignOut: () => dispatch(signOut()),
     };
 };
 

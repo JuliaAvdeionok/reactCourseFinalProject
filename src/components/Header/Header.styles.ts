@@ -5,6 +5,7 @@ export default (theme: Theme) => ({
         background: theme.header.background.dark,
         color: theme.header.background.contrastText,
         height: theme.header.height,
+        padding: '0 10px'
     },
     content: {
         width: '100%',
@@ -14,5 +15,10 @@ export default (theme: Theme) => ({
         justifyContent: 'space-between',
         alignItems: 'center',
         height: '100%'
+    },
+    header: {
+        display: 'grid',
+        gridTemplateColumns: '150px 150px',
+        gridGap: '0 10px',
     }
 });

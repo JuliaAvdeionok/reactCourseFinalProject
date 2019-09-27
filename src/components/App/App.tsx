@@ -1,7 +1,7 @@
 import * as React from 'react';
 import withStyles, { WithStyles } from 'react-jss';
 import { v4 as uuid } from 'uuid';
-import { Route, Switch } from 'react-router';
+import { Route, Switch } from 'react-router-dom';
 
 import styles from './App.styles';
 import routes, { AppRoute } from './App.routes';

@@ -1,4 +1,4 @@
-import { LabelNames, Membership, Prefs } from './Board';
+import { LabelNames, Membership, Prefs } from './BoardModel';
 
 // export interface Prefs {
 //     permissionLevel: string;

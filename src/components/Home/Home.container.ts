@@ -6,6 +6,9 @@ import { HomeComponent } from './Home';
 import { DispatchProps, HomeProps, StateProps } from './Home.props';
 import { fetchList } from '../../store/member';
 import { getMember } from '../../store/member/selectors';
+import { onAddBoard } from '../../store/board';
+import { ToAddModel } from '../../models/ToAddModel';
+import { withRouter } from 'react-router-dom';
 
 const mapStateToProps = (state: AppState): StateProps => {
     return {
@@ -14,10 +17,11 @@ const mapStateToProps = (state: AppState): StateProps => {
     };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<Action<string>>) => ({
-    onFetchList: () => dispatch(fetchList())
+const mapDispatchToProps = (dispatch: Dispatch<Action<any>>) => ({
+    onFetchList: () => dispatch(fetchList()),
+    onAddBoard: (newItem: ToAddModel) => dispatch(onAddBoard(newItem))
 });
 
-const HomeConnected = connect<StateProps, DispatchProps, HomeProps>(mapStateToProps, mapDispatchToProps)(HomeComponent);
-
+const HomeConnected =
+  withRouter(connect<StateProps, DispatchProps, HomeProps>(mapStateToProps, mapDispatchToProps)(HomeComponent) as any);
 export { HomeConnected as Home };

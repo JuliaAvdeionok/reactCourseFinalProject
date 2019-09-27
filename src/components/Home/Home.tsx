@@ -8,6 +8,7 @@ import { PATHS } from '../App/App.paths';
 import { Link } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
 import { CardWrapper } from '../CardWrapper';
+import { AddForm } from '../ToDoForm';
 
 class Home extends React.PureComponent<StateProps & DispatchProps & RouteComponentProps & WithStyles<typeof styles>> {
     public state = {
@@ -15,7 +16,6 @@ class Home extends React.PureComponent<StateProps & DispatchProps & RouteCompone
     };
 
     public componentDidMount(): void {
-        console.log('componentDidMount in Home');
         this.props.onFetchList();
     }
 
@@ -24,6 +24,9 @@ class Home extends React.PureComponent<StateProps & DispatchProps & RouteCompone
         return <Page title={'CLONE TRELLO|HOME'}>
             <div className={classes.container}>
                 <h2>Hello user</h2>
+                <div className={classes.addForm}>
+                    <AddForm formName={'Add new board'} onAddItem={this.props.onAddBoard}/>
+                </div>
                 <div className={classes.boardList}>
                     {this.renderBoardList()}
                 </div>

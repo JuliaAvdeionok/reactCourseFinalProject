@@ -1,4 +1,5 @@
 import { Member } from '../../models';
+import { ToAddModel } from '../../models/ToAddModel';
 
 export interface HomeProps {
 }
@@ -10,4 +11,5 @@ export interface StateProps {
 
 export interface DispatchProps {
     onFetchList: () => void;
+    onAddBoard: (newItem: ToAddModel) => void;
 }
