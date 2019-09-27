@@ -18,7 +18,16 @@ export class ApiRequest {
 
     public static post = async <T>(uri: string, options?: RequestOptions) => {
         try {
-            const response = await axios.post(apiUrl + uri);
+            const response = await axios.post<T>(apiUrl + uri);
+            return response.data;
+        } catch (e) {
+            throw e;
+        }
+    };
+
+    public static put = async <T>(uri: string, options?: RequestOptions) => {
+        try {
+            const response = await axios.put(apiUrl + uri);
             return response.data;
         } catch (e) {
             throw e;

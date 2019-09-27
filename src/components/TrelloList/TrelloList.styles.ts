@@ -20,5 +20,8 @@ export default (theme: Theme) => ({
         backgroundColor: theme.palette.primary.main
     },
     cardList: {
+    },
+    delButton: {
+
     }
 });

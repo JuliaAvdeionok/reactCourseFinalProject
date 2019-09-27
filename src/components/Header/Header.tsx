@@ -10,6 +10,7 @@ import { PATHS } from '../App/App.paths';
 import { Link } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
 import { Button } from '../Button';
+import { FaHome } from 'react-icons/fa';
 
 interface StateProps {
     isSignedIn: boolean;
@@ -37,7 +38,7 @@ class Header extends React.PureComponent<StateProps & DispatchProps & WithStyles
         if (this.props.isSignedIn) {
             return <div className={classes.header}>
                 <div>
-                    <Button className={classes.root} ><Link key={uuid()} to={link}>Boards</Link></Button>
+                    <Button className={classes.root} > <FaHome /> <Link key={uuid()} to={link}>Boards</Link></Button>
                 </div>
                 <div>
                     <Button onClick={this.props.onSignOut}>Sign Out</Button>

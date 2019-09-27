@@ -18,6 +18,10 @@ export default (appState: TrelloListState = INITIAL_STATE, action: Action<Array<
             return {...appState, id: action.payload };
         case ACTION_TYPES.SET_TRELLO_LIST:
             return {...appState, trelloListArray: action.payload };
+        case ACTION_TYPES.ADD_TRELLO_LIST:
+            return {...appState };
+        case ACTION_TYPES.DEL_TRELLO_LIST:
+            return {...appState, id: action.payload };
         default:
             return appState;
     }

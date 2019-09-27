@@ -21,9 +21,10 @@ export default (theme: Theme) => ({
         margin: '8px 0px',
         borderRadius: '5',
         color: '#000',
-        fontSize: 30,
+        fontSize: 18,
         '&:hover': {
-            color: '#D32520',
+            color: theme.palette.primary.base,
+            background: theme.palette.primary.contrastText
         }
     }
 });

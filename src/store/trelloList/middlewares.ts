@@ -4,7 +4,8 @@ import { Action } from '../types';
 import { ACTION_TYPES } from './actionsTypes';
 import { getToken } from '../auth/selectors';
 import { TrelloListModel } from '../../models/TrelloListModel';
-import { setTrelloList } from './actions';
+import { fetchTrelloList, setTrelloList } from './actions';
+import { ToAddModel } from '../../models/ToAddModel';
 
 const key = process.env.REACT_APP_KEY;
 
@@ -31,4 +32,53 @@ const fetchMiddleware = ({dispatch, getState}: Store) => (next: (action: Action<
     next(action);
 };
 
-export const trelloListMiddlewares = [ fetchMiddleware ];
+const postTrelloList = async (newList: ToAddModel, token: string) => {
+    try {
+        const TRELLO_LIST = `boards/${newList.parentId}/lists?name=${newList.name}&key=${key}&token=${token}`;
+        const response = await ApiRequest.post(TRELLO_LIST);
+        return response;
+    } catch (e) {
+        throw e;
+    }
+};
+
+const postTrelloListMiddleware =
+  ({dispatch, getState}: Store) => (next: (action: Action<any>) => void) => (action: Action<any>) => {
+      if (action.type === ACTION_TYPES.ADD_TRELLO_LIST) {
+          const newList = action.payload;
+          const state = getState();
+          const token = getToken(state);
+          postTrelloList(newList, token).then((list: TrelloListModel) => {
+              dispatch(fetchTrelloList(list.idBoard));
+          });
+      }
+
+      next(action);
+  };
+
+const delTrelloList = async (id: string, token: string) => {
+    try {
+        const DEL_TRELLO_LIST = `lists/${id}/closed?key=${key}&token=${token}`;
+        const response = await ApiRequest.put(DEL_TRELLO_LIST);
+        return response;
+    } catch (e) {
+        throw e;
+    }
+};
+
+const delTrelloListMiddleware =
+  ({dispatch, getState}: Store) => (next: (action: Action<any>) => void) => (action: Action<any>) => {
+      if (action.type === ACTION_TYPES.DEL_TRELLO_LIST) {
+          const id = action.payload;
+          const state = getState();
+          const token = getToken(state);
+          delTrelloList(id, token).then((list: TrelloListModel) => {
+              console.log('list: ' + JSON.stringify(list));
+              dispatch(fetchTrelloList(list.idBoard));
+          });
+      }
+
+      next(action);
+  };
+
+export const trelloListMiddlewares = [ fetchMiddleware, postTrelloListMiddleware, delTrelloListMiddleware ];

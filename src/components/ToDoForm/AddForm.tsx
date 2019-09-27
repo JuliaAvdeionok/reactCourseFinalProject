@@ -1,13 +1,15 @@
 import * as React from 'react';
+import { SyntheticEvent } from 'react';
 
 import withStyles, { WithStyles } from 'react-jss';
 import styles from './AddForm.styles';
-import { SyntheticEvent } from 'react';
 import { ToAddModel } from '../../models/ToAddModel';
+import { FaPlus } from 'react-icons/fa';
 
 interface Props {
     formName: string;
     onAddItem: (toAdd: any) => void;
+    parentId?: string;
 }
 
 interface State {
@@ -22,7 +24,8 @@ class AddForm extends React.PureComponent<Props & WithStyles<typeof styles>, Sta
     private onSubmit = (e) => {
         e.preventDefault();
         const {name} = this.state;
-        this.props.onAddItem(new ToAddModel(name));
+        const {parentId} = this.props;
+        this.props.onAddItem(new ToAddModel(name, parentId));
     };
 
     private onChange = (field: string) => {
@@ -47,7 +50,7 @@ class AddForm extends React.PureComponent<Props & WithStyles<typeof styles>, Sta
               type='text'
               placeholder={this.props.formName}
             />
-            <button className={classes.button}>+</button>
+            <button className={classes.button}><FaPlus/></button>
         </form>;
     }
 }

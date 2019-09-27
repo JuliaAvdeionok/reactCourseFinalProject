@@ -12,6 +12,7 @@ export default (theme: Theme) => ({
         textAlign: 'center',
         textDecoration: 'none',
         transitionDuration: '0.4s',
+        border: '1px solid #ccc',
         '&:hover': {
             backgroundColor: theme.palette.primary.contrastText,
             color: theme.palette.primary.base,

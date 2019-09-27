@@ -7,6 +7,11 @@ import { AppState } from '../../store';
 import { getCardListById } from '../../store/trelloList/selectors';
 import { v4 as uuid } from 'uuid';
 import { Card } from '../Card';
+import { Button } from '../Button';
+import { FaTrash } from 'react-icons/all';
+import { Dispatch } from 'redux';
+import { Action } from '../../store/types';
+import { delTrelloList } from '../../store/trelloList';
 
 export interface TrelloListProps {
     id: string;
@@ -17,16 +22,19 @@ interface StateProps {
     cardList: Array<CardModel>;
 }
 
-// interface DispatchProps {
-//     onFetchTrelloMap: () => void;
-// }
+interface DispatchProps {
+    onDelTrelloList: (listId: string) => void;
+}
 
-class TrelloList extends React.PureComponent<TrelloListProps & StateProps & WithStyles<typeof styles>> {
+class TrelloList extends React.PureComponent<TrelloListProps & StateProps & DispatchProps & WithStyles<typeof styles>> {
 
     public render() {
         const {classes, cardList} = this.props;
         return <div className={classes.listWrapper}>
             <h2> {this.props.name} </h2>
+            <div className={classes.delButton}>
+                <Button onClick={this.deleteTrelloList}><FaTrash/>Del list</Button>
+            </div>
             <div className={classes.cardList}>
                 {
                     cardList.map(item => {
@@ -37,6 +45,11 @@ class TrelloList extends React.PureComponent<TrelloListProps & StateProps & With
         </div>;
     }
 
+    private deleteTrelloList = () => {
+        const {id} = this.props;
+        this.props.onDelTrelloList(id);
+    };
+
 }
 
 const mapStateToProps = (state: AppState, ownProps: TrelloListProps): StateProps => {
@@ -45,13 +58,12 @@ const mapStateToProps = (state: AppState, ownProps: TrelloListProps): StateProps
     };
 };
 
-// const mapDispatchToProps = (dispatch: Dispatch<Action<any>>) => ({
-//
-// });
-
+const mapDispatchToProps = (dispatch: Dispatch<Action<any>>) => ({
+    onDelTrelloList: (listId: string) => dispatch(delTrelloList(listId)),
+});
 const WrappedWithStylesComponent = withStyles(styles)(TrelloList);
 
 const ConnectedComponent =
-  connect(mapStateToProps)(WrappedWithStylesComponent);
+  connect(mapStateToProps, mapDispatchToProps)(WrappedWithStylesComponent);
 
 export { ConnectedComponent as TrelloList };

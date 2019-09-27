@@ -11,12 +11,15 @@ import { AppState } from '../../store';
 import { BoardModel, } from '../../models';
 import { getBoardName } from '../../store/board/selectors';
 import { CardModel } from '../../models/CardModel';
-import { fetchTrelloList } from '../../store/trelloList';
+import { addTrelloList, fetchTrelloList } from '../../store/trelloList';
 import { fetchCardList, fetchCardMap } from '../../store/card';
 import { TrelloList } from '../TrelloList';
 import { TrelloListModel } from '../../models/TrelloListModel';
 import { v4 as uuid } from 'uuid';
 import { Button } from '../Button';
+import { ToAddModel } from '../../models/ToAddModel';
+import { AddForm } from '../ToDoForm';
+import { FaTrash } from 'react-icons/fa';
 
 interface StateProps {
     id: string;
@@ -32,6 +35,7 @@ interface DispatchProps {
     onFetchTrelloList: (boardId: string) => void;
     onFetchTrelloMap: () => void;
     onDelBoard: (boardId: string) => void;
+    onAddTrelloList: (newItem: ToAddModel) => void;
 }
 
 class Board extends React.PureComponent<StateProps & DispatchProps & RouteComponentProps & WithStyles<typeof styles>> {
@@ -63,7 +67,10 @@ class Board extends React.PureComponent<StateProps & DispatchProps & RouteCompon
             <div className={classes.grid}>
                 <div>
                     <h2>{boardName}</h2>
-                    <Button onClick={this.deleteBoard}>Detele this board</Button>
+                    <Button onClick={this.deleteBoard}><FaTrash/>Detele this board</Button>
+                </div>
+                <div className={classes.addForm}>
+                    <AddForm formName={'Add new list'} onAddItem={this.props.onAddTrelloList} parentId={this.props.id}/>
                 </div>
                 <div className={classes.boardList}>
                     {
@@ -81,6 +88,24 @@ class Board extends React.PureComponent<StateProps & DispatchProps & RouteCompon
         </Page>;
     }
 
+    private renderTrelloListArray = () => {
+        const {trelloListArray} = this.props;
+        return trelloListArray.map(item => {
+            const {id, name} = item;
+            return <TrelloList
+              key={uuid()}
+              id={id}
+              name={name}
+            />;
+        });
+    };
+
+    // private addTrelloList = () => {
+    //     const {id} = this.props;
+    //     this.props.
+    //     this.props.onAddTrelloList(id);
+    // }
+
     private deleteBoard = () => {
         const {id} = this.props;
         this.props.onDelBoard(id);
@@ -97,12 +122,13 @@ const mapStateToProps = (state: AppState): StateProps => {
     };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<Action<string>>) => ({
+const mapDispatchToProps = (dispatch: Dispatch<Action<any>>) => ({
     onFetchBoard: (boardId: string) => dispatch(fetchBoardById(boardId)),
     onFetchCardList: (boardId: string) => dispatch(fetchCardList(boardId)),
     onFetchTrelloList: (boardId: string) => dispatch(fetchTrelloList(boardId)),
     onFetchTrelloMap: () => dispatch(fetchCardMap()),
     onDelBoard: (boardId: string) => dispatch(delBoard(boardId)),
+    onAddTrelloList: (newItem: ToAddModel) => dispatch(addTrelloList(newItem))
 });
 
 const WrappedWithStylesComponent = withStyles(styles)(Board);
