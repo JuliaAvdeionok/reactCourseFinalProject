@@ -5,6 +5,7 @@ import { CardModel } from '../../models/CardModel';
 
 interface Props {
     cardItem: CardModel;
+    index: number;
 }
 
 class Card
@@ -16,6 +17,7 @@ class Card
             <div> {cardItem.name} </div>
         </div>;
     }
+
 }
 
 const WrappedWithStylesComponent = withStyles(styles)(Card);

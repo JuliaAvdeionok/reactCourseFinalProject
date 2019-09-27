@@ -20,6 +20,7 @@ import { Button } from '../Button';
 import { ToAddModel } from '../../models/ToAddModel';
 import { AddForm } from '../ToDoForm';
 import { FaTrash } from 'react-icons/fa';
+import { DragDropContext } from 'react-beautiful-dnd';
 
 interface StateProps {
     id: string;
@@ -64,47 +65,37 @@ class Board extends React.PureComponent<StateProps & DispatchProps & RouteCompon
     public render() {
         const {boardName, classes, trelloListArray} = this.props;
         return <Page title={'CLONE TRELLO|BOARD'}>
-            <div className={classes.grid}>
-                <div>
-                    <h2>{boardName}</h2>
-                    <Button onClick={this.deleteBoard}><FaTrash/>Detele this board</Button>
+            <DragDropContext onDragEnd={this.onDragEnd}>
+                <div className={classes.grid}>
+                    <div>
+                        <h2>{boardName}</h2>
+                        <Button onClick={this.deleteBoard}><FaTrash/>Detele this board</Button>
+                    </div>
+                    <div className={classes.addForm}>
+                        <AddForm formName={'Add new list'} onAddItem={this.props.onAddTrelloList}
+                                 parentId={this.props.id}/>
+                    </div>
+                    <div className={classes.boardList}>
+                        {
+                            trelloListArray.map((item, index) => {
+                                const {id, name} = item;
+                                return <TrelloList
+                                  key={uuid()}
+                                  id={id}
+                                  name={name}
+                                  index={index}
+                                />;
+                            })
+                        }
+                    </div>
                 </div>
-                <div className={classes.addForm}>
-                    <AddForm formName={'Add new list'} onAddItem={this.props.onAddTrelloList} parentId={this.props.id}/>
-                </div>
-                <div className={classes.boardList}>
-                    {
-                        trelloListArray.map(item => {
-                            const {id, name} = item;
-                            return <TrelloList
-                              key={uuid()}
-                              id={id}
-                              name={name}
-                            />;
-                        })
-                    }
-                </div>
-            </div>
+            </DragDropContext>
         </Page>;
     }
 
-    private renderTrelloListArray = () => {
-        const {trelloListArray} = this.props;
-        return trelloListArray.map(item => {
-            const {id, name} = item;
-            return <TrelloList
-              key={uuid()}
-              id={id}
-              name={name}
-            />;
-        });
+    private onDragEnd = () => {
+        console.log('onDragEnd!!!');
     };
-
-    // private addTrelloList = () => {
-    //     const {id} = this.props;
-    //     this.props.
-    //     this.props.onAddTrelloList(id);
-    // }
 
     private deleteBoard = () => {
         const {id} = this.props;
@@ -132,10 +123,6 @@ const mapDispatchToProps = (dispatch: Dispatch<Action<any>>) => ({
 });
 
 const WrappedWithStylesComponent = withStyles(styles)(Board);
-
-// const ConnectedComponent =
-//   connect<StateProps, DispatchProps>(mapStateToProps, mapDispatchToProps)(WrappedWithStylesComponent);
-
 
 const ConnectedComponent =
   withRouter(connect<StateProps, DispatchProps, RouteComponentProps>(mapStateToProps, mapDispatchToProps)(WrappedWithStylesComponent) as any);

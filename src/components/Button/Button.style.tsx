@@ -16,6 +16,7 @@ export default (theme: Theme) => ({
         '&:hover': {
             backgroundColor: theme.palette.primary.contrastText,
             color: theme.palette.primary.base,
+            borderColor: theme.palette.primary.contrastText,
         }
     },
     content: {},
