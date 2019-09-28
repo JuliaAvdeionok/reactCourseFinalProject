@@ -103,10 +103,7 @@ class Board extends React.PureComponent<StateProps & DispatchProps & RouteCompon
         if (result.source.droppableId !== result.destination.droppableId) {
             const newCardModel = new UpdateCardModel(result.draggableId, result.destination.droppableId);
             this.props.onDraggEnd(newCardModel);
-
         }
-
-        console.log('onDragEnd!!!' + JSON.stringify(result));
     };
 
     private deleteBoard = () => {

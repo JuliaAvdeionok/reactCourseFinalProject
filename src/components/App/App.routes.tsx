@@ -28,6 +28,13 @@ export default [
         path: PATHS.BOARD,
         render: (props: RouteComponentProps) => <Board {...props}/>,
         isProtected: true,
+        routes: [
+            {
+                path: PATHS.BOARD_ID,
+                isProtected: true,
+                render: (props: RouteComponentProps) => <Board {...props}/>,
+            }
+        ]
     },
     {
         path: PATHS.AUTH,

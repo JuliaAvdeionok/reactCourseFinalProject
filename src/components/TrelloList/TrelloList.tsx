@@ -5,8 +5,6 @@ import styles from '../TrelloList/TrelloList.styles';
 import { CardModel } from '../../models/CardModel';
 import { v4 as uuid } from 'uuid';
 import { Card } from '../Card';
-import { Button } from '../Button';
-import { FaTrash } from 'react-icons/all';
 import { Action } from '../../store/types';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import { delTrelloList } from '../../store/trelloList';
@@ -43,7 +41,7 @@ class TrelloList extends React.PureComponent<TrelloListProps & StateProps & Disp
                           <h2> {this.props.name} </h2>
                           {this.renderCardList()}
                           <div className={classes.delButton}>
-                              <Button onClick={this.deleteTrelloList}><FaTrash/>Del list</Button>
+                              {/*<Button onClick={this.deleteTrelloList}><FaTrash/>Del list</Button>*/}
                           </div>
                       </div>}
                   {provided.placeholder}

@@ -5,4 +5,5 @@ export enum PATHS {
     NOT_FOUND = '/404',
     REDIRECT = '/*',
     BOARD = '/board',
+    BOARD_ID = '/board/:id',
 }
