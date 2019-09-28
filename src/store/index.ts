@@ -7,6 +7,7 @@ import member, { memberMiddlewares, MemberState } from './member';
 import board, { boardMiddlewares, BoardState } from './board';
 import card, { cardMiddlewares, CardState } from './card';
 import trelloList, { trelloListMiddlewares, TrelloListState } from './trelloList';
+import drag, { dragMiddlewares, DragState } from './drag';
 
 // @ts-ignore
 const composeEnhancers = (process.env.NODE_ENV !== 'production' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__)
@@ -20,6 +21,7 @@ export interface AppState {
     board: BoardState;
     card: CardState;
     trelloList: TrelloListState;
+    drag: DragState;
 }
 
 const rootReducer = (history: History) => combineReducers(
@@ -29,6 +31,7 @@ const rootReducer = (history: History) => combineReducers(
       board,
       card,
       trelloList,
+      drag,
       router: connectRouter(history),
   }
 );
@@ -46,6 +49,7 @@ export default (history) => {
           ...boardMiddlewares,
           ...cardMiddlewares,
           ...trelloListMiddlewares,
+          ...dragMiddlewares
         )
       )
     );

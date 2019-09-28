@@ -4,9 +4,10 @@ import { Action } from '../types';
 import { ACTION_TYPES } from './actionsTypes';
 import { getToken } from '../auth/selectors';
 import { setCardList, setCardMap } from './actions';
-import { CardModel } from '../../models/CardModel';
+import { CardModel, UpdateCardModel } from '../../models/CardModel';
 import { getCardList, getTrelloListArray } from './selectors';
 import { TrelloListModel } from '../../models/TrelloListModel';
+import { fetchBoardById } from '../board';
 
 const key = process.env.REACT_APP_KEY;
 
@@ -20,17 +21,6 @@ const fetchCardList = async (id: string, token: string) => {
     }
 };
 
-const createCardMap = (cardList: Array<CardModel>,
-                       trelloListArray: Array<TrelloListModel>): Map<string, Array<CardModel>> => {
-    const cardMap = new Map<string, Array<CardModel>>();
-    trelloListArray.map(trelloList => trelloList.id)
-      .forEach(trelloListId => {
-          const filtredCardList = cardList.filter(card => card.idList === trelloListId);
-          cardMap.set(trelloListId, filtredCardList);
-      });
-    return cardMap;
-};
-
 const fetchCardListMiddleware = ({dispatch, getState}: Store) => (next: (action: Action<any>) => void) => (action: Action<any>) => {
     if (action.type === ACTION_TYPES.FETCH_CARD_LIST) {
         const code = action.payload;
@@ -42,6 +32,18 @@ const fetchCardListMiddleware = ({dispatch, getState}: Store) => (next: (action:
     }
 
     next(action);
+};
+
+
+const createCardMap = (cardList: Array<CardModel>,
+                       trelloListArray: Array<TrelloListModel>): Map<string, Array<CardModel>> => {
+    const cardMap = new Map<string, Array<CardModel>>();
+    trelloListArray.map(trelloList => trelloList.id)
+      .forEach(trelloListId => {
+          const filtredCardList = cardList.filter(card => card.idList === trelloListId);
+          cardMap.set(trelloListId, filtredCardList);
+      });
+    return cardMap;
 };
 
 const fetchCardMapMiddleware = ({dispatch, getState}: Store) => (next: (action: Action<any>) => void) => (action: Action<any>) => {
@@ -58,4 +60,28 @@ const fetchCardMapMiddleware = ({dispatch, getState}: Store) => (next: (action: 
     next(action);
 };
 
-export const cardMiddlewares = [ fetchCardListMiddleware, fetchCardMapMiddleware ];
+const updateCardListId = async (newCard: UpdateCardModel, token: string) => {
+    try {
+        const UPDATE_LIST_ID_URL = `cards/${newCard.id}/?idList=${newCard.idList}&key=${key}&token=${token}`;
+        const response = await ApiRequest.put<CardModel>(UPDATE_LIST_ID_URL);
+        return response;
+    } catch (e) {
+        throw e;
+    }
+};
+
+const updateCardListIdMiddleware = ({dispatch, getState}: Store) => (next: (action: Action<any>) => void) => (action: Action<any>) => {
+    if (action.type === ACTION_TYPES.UPDATE_CARD_LIST_ID) {
+        const newCard = action.payload;
+        const state = getState();
+        const token = getToken(state);
+        updateCardListId(newCard, token).then((card: CardModel) => {
+            // console.log('newCard' + JSON.stringify(card));
+            dispatch(fetchBoardById(card.idBoard));
+        });
+    }
+
+    next(action);
+};
+
+export const cardMiddlewares = [ fetchCardListMiddleware, fetchCardMapMiddleware, updateCardListIdMiddleware ];

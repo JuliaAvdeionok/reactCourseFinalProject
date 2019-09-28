@@ -10,9 +10,9 @@ import { delBoard, fetchBoardById } from '../../store/board';
 import { AppState } from '../../store';
 import { BoardModel, } from '../../models';
 import { getBoardName } from '../../store/board/selectors';
-import { CardModel } from '../../models/CardModel';
+import { CardModel, UpdateCardModel } from '../../models/CardModel';
 import { addTrelloList, fetchTrelloList } from '../../store/trelloList';
-import { fetchCardList, fetchCardMap } from '../../store/card';
+import { fetchCardList, fetchCardMap, updateCardListId } from '../../store/card';
 import { TrelloList } from '../TrelloList';
 import { TrelloListModel } from '../../models/TrelloListModel';
 import { v4 as uuid } from 'uuid';
@@ -21,6 +21,7 @@ import { ToAddModel } from '../../models/ToAddModel';
 import { AddForm } from '../ToDoForm';
 import { FaTrash } from 'react-icons/fa';
 import { DragDropContext } from 'react-beautiful-dnd';
+import { DnDResult } from '../../models/DnDResult';
 
 interface StateProps {
     id: string;
@@ -37,6 +38,7 @@ interface DispatchProps {
     onFetchTrelloMap: () => void;
     onDelBoard: (boardId: string) => void;
     onAddTrelloList: (newItem: ToAddModel) => void;
+    onDraggEnd: (newCard: UpdateCardModel) => void;
 }
 
 class Board extends React.PureComponent<StateProps & DispatchProps & RouteComponentProps & WithStyles<typeof styles>> {
@@ -93,8 +95,18 @@ class Board extends React.PureComponent<StateProps & DispatchProps & RouteCompon
         </Page>;
     }
 
-    private onDragEnd = () => {
-        console.log('onDragEnd!!!');
+    private onDragEnd = (result: DnDResult) => {
+        if (!result.destination) {
+            return;
+        }
+
+        if (result.source.droppableId !== result.destination.droppableId) {
+            const newCardModel = new UpdateCardModel(result.draggableId, result.destination.droppableId);
+            this.props.onDraggEnd(newCardModel);
+
+        }
+
+        console.log('onDragEnd!!!' + JSON.stringify(result));
     };
 
     private deleteBoard = () => {
@@ -119,7 +131,8 @@ const mapDispatchToProps = (dispatch: Dispatch<Action<any>>) => ({
     onFetchTrelloList: (boardId: string) => dispatch(fetchTrelloList(boardId)),
     onFetchTrelloMap: () => dispatch(fetchCardMap()),
     onDelBoard: (boardId: string) => dispatch(delBoard(boardId)),
-    onAddTrelloList: (newItem: ToAddModel) => dispatch(addTrelloList(newItem))
+    onAddTrelloList: (newItem: ToAddModel) => dispatch(addTrelloList(newItem)),
+    onDraggEnd: (newCard: UpdateCardModel) => dispatch(updateCardListId(newCard))
 });
 
 const WrappedWithStylesComponent = withStyles(styles)(Board);

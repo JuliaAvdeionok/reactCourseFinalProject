@@ -18,6 +18,7 @@ export interface TrelloListProps {
     id: string;
     name: string;
     index: number;
+    isDagged?: boolean;
 }
 
 interface StateProps {
@@ -32,18 +33,18 @@ class TrelloList extends React.PureComponent<TrelloListProps & StateProps & Disp
 
     public render() {
         const {classes} = this.props;
-        return <Droppable droppableId={this.props.id}>
-            {(provided) => (
-              <div
+        return <Droppable className={classes.cardList} droppableId={this.props.id}>
+            {(provided, snapshot) => (
+              <div className={snapshot.isDraggingOver ? classes.listDreggedOver : classes.listContainer}
                 {...provided.droppableProps}
                 ref={provided.innerRef}>
                   {
                       <div className={classes.listWrapper}>
                           <h2> {this.props.name} </h2>
+                          {this.renderCardList()}
                           <div className={classes.delButton}>
                               <Button onClick={this.deleteTrelloList}><FaTrash/>Del list</Button>
                           </div>
-                          {this.renderCardList()}
                       </div>}
                   {provided.placeholder}
               </div>
@@ -58,11 +59,13 @@ class TrelloList extends React.PureComponent<TrelloListProps & StateProps & Disp
             {
                 cardList.map((item, index) => {
                     return <Draggable key={item.id} draggableId={item.id} index={index}>
-                        {(provided) => (
-                          <div ref={provided.innerRef}
-                               {...provided.draggableProps}
-                               {...provided.dragHandleProps}>
-                              <Card key={uuid()} cardItem={item} index={index}/>
+                        {(provided, snapshot) => (
+                          <div
+                            className={snapshot.isDragging ? classes.containerDregged : classes.container}
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}>
+                              <Card key={uuid()} cardItem={item} index={index} isDragging={snapshot.isDagged}/>
                           </div>
                         )}
                     </Draggable>;

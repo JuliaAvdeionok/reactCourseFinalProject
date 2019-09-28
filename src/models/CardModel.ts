@@ -60,3 +60,17 @@ export interface CardModel {
     url: string;
     cover: Cover;
 }
+
+export class UpdateCardModel {
+    public id: string;
+    public idBoard?: string;
+    public idList: string;
+
+    constructor(
+      id: string,
+      idList: string
+    ) {
+        this.id = id;
+        this.idList = idList;
+    }
+}
