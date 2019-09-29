@@ -25,7 +25,5 @@ export default (theme: Theme) => ({
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fill, minmax(300px,1fr))',
     },
-    addForm: {
-
-    }
+    addForm: {}
 });

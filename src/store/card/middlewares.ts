@@ -3,18 +3,15 @@ import { ApiRequest } from '../../apis/ApiRequest';
 import { Action } from '../types';
 import { ACTION_TYPES } from './actionsTypes';
 import { getToken } from '../auth/selectors';
-import { setCardList, setCardMap } from './actions';
+import { setCardList, setCardMap, fetchCardList } from './actions';
 import { CardModel, UpdateCardModel } from '../../models/CardModel';
 import { getCardList, getTrelloListArray } from './selectors';
 import { TrelloListModel } from '../../models/TrelloListModel';
-import { fetchBoardById } from '../board';
-import { push } from 'connected-react-router';
-import { PATHS } from '../../components/App/App.paths';
 import { ToAddModel } from '../../models/ToAddModel';
 
 const key = process.env.REACT_APP_KEY;
 
-const fetchCardList = async (id: string, token: string) => {
+const getRequestCardList = async (id: string, token: string) => {
     try {
         const BOARD_URL = `boards/${id}/cards?&key=${key}&token=${token}`;
         const response = await ApiRequest.get<Array<CardModel>>(BOARD_URL);
@@ -29,7 +26,7 @@ const fetchCardListMiddleware = ({dispatch, getState}: Store) => (next: (action:
         const code = action.payload;
         const state = getState();
         const token = getToken(state);
-        fetchCardList(code, token).then((list: Array<CardModel>) => {
+        getRequestCardList(code, token).then((list: Array<CardModel>) => {
             dispatch(setCardList(list));
         });
     }
@@ -79,7 +76,7 @@ const updateCardListIdMiddleware = ({dispatch, getState}: Store) => (next: (acti
         const token = getToken(state);
         updateCardListId(newCard, token).then((card: CardModel) => {
             // console.log('newCard' + JSON.stringify(card));
-            dispatch(fetchBoardById(card.idBoard));
+            dispatch(fetchCardList(card.idBoard));
         });
     }
 
@@ -102,8 +99,7 @@ const delCardMiddleware = ({dispatch, getState}: Store) => (next: (action: Actio
         const state = getState();
         const token = getToken(state);
         deleteCard(delCard.id, token).then(() => {
-            dispatch(fetchBoardById(delCard.idBoard));
-            dispatch(push(PATHS.BOARD + `/${delCard.idBoard}`));
+            dispatch(fetchCardList(delCard.idBoard));
         });
     }
 
@@ -126,8 +122,7 @@ const addCardMiddleware = ({dispatch, getState}: Store) => (next: (action: Actio
         const state = getState();
         const token = getToken(state);
         addCard(newCard, token).then((card: CardModel) => {
-            console.log('newCard' + JSON.stringify(card));
-            dispatch(fetchBoardById(card.idBoard));
+            dispatch(fetchCardList(card.idBoard));
         });
     }
 

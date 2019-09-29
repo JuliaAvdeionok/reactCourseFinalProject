@@ -1,10 +1,11 @@
 import { ACTION_TYPES } from './actionsTypes';
+import { Member } from '../../models';
 
-export const setList = (list: Array<any>) => ({
-    type: ACTION_TYPES.SET_LIST,
-    payload: list,
+export const setMember = (member: Array<Member>) => ({
+    type: ACTION_TYPES.SET_MEMBER,
+    payload: member,
 });
 
-export const fetchList = () => ({
-    type: ACTION_TYPES.FETCH_LIST,
+export const fetchMember = () => ({
+    type: ACTION_TYPES.FETCH_MEMBER,
 });

@@ -72,8 +72,7 @@ const delTrelloListMiddleware =
           const id = action.payload;
           const state = getState();
           const token = getToken(state);
-          delTrelloList(id, token).then((list: TrelloListModel) => {
-              console.log('list: ' + JSON.stringify(list));
+          delTrelloList(id, token).then((list: any) => {
               dispatch(fetchTrelloList(list.idBoard));
           });
       }

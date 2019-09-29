@@ -10,39 +10,21 @@ export default (theme: Theme) => ({
     },
     content: {},
     cardWrapper: {
-        // border: '1px solid orange',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
         height: '100%',
         marginRight: 10
-        // gridTemplateColumns: '1rf 30px',
-        // gridTemplateRowsemplate: '1fr',
-        // gridGap: 10
     },
     cardBlock: {
         display: 'grid',
-        // display: 'inline-block',
-        // border: '3px solid red',
     },
     disabled: {
         boxShadow: 'none !important'
     },
     listWrapper: {
-        // display: 'grid',
-        // gridTemplateColumns: 'repeat(auto-fill, minmax(300px,1fr))',
-        // gridGap: '0 10px',
-        // margin: '10px 10px',
-        // borderRadius: theme.card.boarderRadius,
     },
     cardList: {
-        // display: 'block',
-        // border: '3px solid black',
-        // gridTemplateColumns: 'repeat(auto-fill, minmax(300px,1fr))',
-        // gridGap: '0 10px',
-        // padding: '12px 15px',
-        // margin: '10px 10px',
-        // backgroundColor: theme.palette.primary.main
     },
     addForm: {},
     boardList: {},

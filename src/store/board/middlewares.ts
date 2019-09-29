@@ -6,7 +6,7 @@ import { ACTION_TYPES } from './actionsTypes';
 import { getToken } from '../auth/selectors';
 import { setBoard } from './actions';
 import { ToAddModel } from '../../models/ToAddModel';
-import { fetchList } from '../member';
+import { fetchMember } from '../member';
 import { push } from 'connected-react-router';
 import { PATHS } from '../../components/App/App.paths';
 
@@ -53,7 +53,7 @@ const postBoardMiddleware =
           const state = getState();
           const token = getToken(state);
           postBoard(newBoard, token).then((board: BoardModel) => {
-              dispatch(fetchList());
+              dispatch(fetchMember());
           });
       }
 
@@ -78,7 +78,7 @@ const delBoardMiddleware =
           const token = getToken(state);
           delBard(id, token).then(() => {
               dispatch(push(PATHS.HOME));
-              dispatch(fetchList());
+              dispatch(fetchMember());
           });
       }
 

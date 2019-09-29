@@ -12,7 +12,9 @@ export const INITIAL_STATE = {
 
 export default (appState: MemberState = INITIAL_STATE, action: Action<Array<any>>) => {
     switch (action.type) {
-        case ACTION_TYPES.SET_LIST:
+        case ACTION_TYPES.FETCH_MEMBER:
+            return {...appState};
+        case ACTION_TYPES.SET_MEMBER:
             return {...appState, list: action.payload };
         default:
             return appState;

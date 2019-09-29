@@ -4,7 +4,7 @@ import { Action } from '../../store/types';
 import { connect } from 'react-redux';
 import { HomeComponent } from './Home';
 import { DispatchProps, HomeProps, StateProps } from './Home.props';
-import { fetchList } from '../../store/member';
+import { fetchMember } from '../../store/member';
 import { getMember } from '../../store/member/selectors';
 import { onAddBoard } from '../../store/board';
 import { ToAddModel } from '../../models/ToAddModel';
@@ -18,7 +18,7 @@ const mapStateToProps = (state: AppState): StateProps => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<Action<any>>) => ({
-    onFetchList: () => dispatch(fetchList()),
+    onFetchList: () => dispatch(fetchMember()),
     onAddBoard: (newItem: ToAddModel) => dispatch(onAddBoard(newItem))
 });
 
