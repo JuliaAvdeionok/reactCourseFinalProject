@@ -5,12 +5,17 @@ export default (theme: Theme) => ({
         background: theme.palette.primary.main
     },
     container: {
+        padding: 10,
         maxWidth: 960,
-        margin: '0 auto'
+        margin: '0 auto',
+        textAlign: 'center',
+
+    },
+    headerTеxt: {
     },
     signInLinkWrapper: {
         width: '100%',
-        // display: 'flex',
+
         justifyContent: 'center'
     },
     signInLink: {
