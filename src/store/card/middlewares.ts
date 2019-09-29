@@ -8,6 +8,9 @@ import { CardModel, UpdateCardModel } from '../../models/CardModel';
 import { getCardList, getTrelloListArray } from './selectors';
 import { TrelloListModel } from '../../models/TrelloListModel';
 import { fetchBoardById } from '../board';
+import { push } from 'connected-react-router';
+import { PATHS } from '../../components/App/App.paths';
+import { ToAddModel } from '../../models/ToAddModel';
 
 const key = process.env.REACT_APP_KEY;
 
@@ -33,7 +36,6 @@ const fetchCardListMiddleware = ({dispatch, getState}: Store) => (next: (action:
 
     next(action);
 };
-
 
 const createCardMap = (cardList: Array<CardModel>,
                        trelloListArray: Array<TrelloListModel>): Map<string, Array<CardModel>> => {
@@ -84,4 +86,53 @@ const updateCardListIdMiddleware = ({dispatch, getState}: Store) => (next: (acti
     next(action);
 };
 
-export const cardMiddlewares = [ fetchCardListMiddleware, fetchCardMapMiddleware, updateCardListIdMiddleware ];
+const deleteCard = async (id: string, token: string) => {
+    try {
+        const DEL_CARD_URL = `cards/${id}/?key=${key}&token=${token}`;
+        const response = await ApiRequest.delete<CardModel>(DEL_CARD_URL);
+        return response;
+    } catch (e) {
+        throw e;
+    }
+};
+
+const delCardMiddleware = ({dispatch, getState}: Store) => (next: (action: Action<any>) => void) => (action: Action<any>) => {
+    if (action.type === ACTION_TYPES.DEL_CARD) {
+        const delCard = action.payload;
+        const state = getState();
+        const token = getToken(state);
+        deleteCard(delCard.id, token).then(() => {
+            dispatch(fetchBoardById(delCard.idBoard));
+            dispatch(push(PATHS.BOARD + `/${delCard.idBoard}`));
+        });
+    }
+
+    next(action);
+};
+
+const addCard = async (newCard: ToAddModel, token: string) => {
+    try {
+        const ADD_CARD = `cards?name=${newCard.name}&idList=${newCard.parentId}&key=${key}&token=${token}`;
+        const response = await ApiRequest.post<CardModel>(ADD_CARD);
+        return response;
+    } catch (e) {
+        throw e;
+    }
+};
+
+const addCardMiddleware = ({dispatch, getState}: Store) => (next: (action: Action<any>) => void) => (action: Action<any>) => {
+    if (action.type === ACTION_TYPES.ADD_CARD) {
+        const newCard = action.payload;
+        const state = getState();
+        const token = getToken(state);
+        addCard(newCard, token).then((card: CardModel) => {
+            console.log('newCard' + JSON.stringify(card));
+            dispatch(fetchBoardById(card.idBoard));
+        });
+    }
+
+    next(action);
+};
+
+export const cardMiddlewares = [ fetchCardListMiddleware, fetchCardMapMiddleware, addCardMiddleware,
+    updateCardListIdMiddleware, delCardMiddleware ];

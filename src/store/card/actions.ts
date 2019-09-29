@@ -1,5 +1,6 @@
 import { ACTION_TYPES } from './actionsTypes';
 import { CardModel, UpdateCardModel } from '../../models/CardModel';
+import { ToAddModel } from '../../models/ToAddModel';
 
 export const fetchCardList = (id: string) => ({
     type: ACTION_TYPES.FETCH_CARD_LIST,
@@ -20,7 +21,17 @@ export const setCardMap = (map: Map<string, Array<CardModel>>) => ({
     payload: map,
 });
 
+export const addCard = (newCard: ToAddModel) => ({
+    type: ACTION_TYPES.ADD_CARD,
+    payload: newCard
+});
+
 export const updateCardListId = (newCard: UpdateCardModel) => ({
     type: ACTION_TYPES.UPDATE_CARD_LIST_ID,
     payload: newCard
+});
+
+export const delCard = (delCard: CardModel) => ({
+    type: ACTION_TYPES.DEL_CARD,
+    payload: delCard
 });

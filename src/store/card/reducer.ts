@@ -23,6 +23,8 @@ export default (appState: CardState = INITIAL_STATE, action: Action<Array<CardMo
             return {...appState, cardList: action.payload };
         case ACTION_TYPES.SET_CARD_MAP:
             return {...appState, cardMap: action.payload };
+        case ACTION_TYPES.DEL_CARD:
+            return {...appState };
         default:
             return appState;
     }

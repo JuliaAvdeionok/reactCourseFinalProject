@@ -7,7 +7,7 @@ import { v4 as uuid } from 'uuid';
 import { Card } from '../Card';
 import { Action } from '../../store/types';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
-import { addTrelloList, delTrelloList } from '../../store/trelloList';
+import { delTrelloList } from '../../store/trelloList';
 import { getCardListById } from '../../store/trelloList/selectors';
 import { AppState } from '../../store';
 import { connect } from 'react-redux';
@@ -15,6 +15,7 @@ import { Button } from '../Button';
 import { FaTrash } from 'react-icons/all';
 import { AddForm } from '../ToDoForm';
 import { ToAddModel } from '../../models/ToAddModel';
+import { addCard, delCard } from '../../store/card';
 
 export interface TrelloListProps {
     id: string;
@@ -30,6 +31,7 @@ interface StateProps {
 interface DispatchProps {
     onDelTrelloList: (listId: string) => void;
     onAddCard: (newItem: ToAddModel) => void;
+    onDeleteCard: (delCard: CardModel) => void;
 }
 
 class TrelloList extends React.PureComponent<TrelloListProps & StateProps & DispatchProps & WithStyles<typeof styles>> {
@@ -77,9 +79,7 @@ class TrelloList extends React.PureComponent<TrelloListProps & StateProps & Disp
                                   <div className={classes.cardBlock}>
                                       <Card key={uuid()} cardItem={item} index={index} isDragging={snapshot.isDagged}/>
                                   </div>
-                                  {/*<div  className={classes.cardBlock}>*/}
-                                      <Button onClick={this.deleteTrelloList}><FaTrash/></Button>
-                                  {/*</div>*/}
+                                  <Button onClick={() => this.deleteCard(item)}><FaTrash/></Button>
                               </div>
                           </div>
                         )}
@@ -87,6 +87,10 @@ class TrelloList extends React.PureComponent<TrelloListProps & StateProps & Disp
                 })
             }
         </div>;
+    };
+
+    private deleteCard = (delCard: CardModel) => {
+        this.props.onDeleteCard(delCard);
     };
 
     private deleteTrelloList = () => {
@@ -104,12 +108,13 @@ const mapStateToProps = (state: AppState, ownProps: TrelloListProps): StateProps
 
 const mapDispatchToProps = (dispatch: Dispatch<Action<any>>) => ({
     onDelTrelloList: (listId: string) => dispatch(delTrelloList(listId)),
-    onAddCard: (newItem: ToAddModel) => dispatch(addTrelloList(newItem)),
+    onAddCard: (newItem: ToAddModel) => dispatch(addCard(newItem)),
+    onDeleteCard: (delCArd: CardModel) => dispatch(delCard(delCArd))
 });
 
 const WrappedWithStylesComponent = withStyles(styles)(TrelloList);
 
 const ConnectedComponent =
-  connect(mapStateToProps, mapDispatchToProps)(WrappedWithStylesComponent);
+  connect<StateProps, DispatchProps, TrelloListProps>(mapStateToProps, mapDispatchToProps)(WrappedWithStylesComponent);
 
 export { ConnectedComponent as TrelloList };
