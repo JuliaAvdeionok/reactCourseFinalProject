@@ -7,7 +7,7 @@ import member, { memberMiddlewares, MemberState } from './member';
 import board, { boardMiddlewares, BoardState } from './board';
 import card, { cardMiddlewares, CardState } from './card';
 import trelloList, { trelloListMiddlewares, TrelloListState } from './trelloList';
-import drag, { dragMiddlewares, DragState } from './drag';
+import drag, { DragState } from './drag';
 
 // @ts-ignore
 const composeEnhancers = (process.env.NODE_ENV !== 'production' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__)
@@ -49,7 +49,6 @@ export default (history) => {
           ...boardMiddlewares,
           ...cardMiddlewares,
           ...trelloListMiddlewares,
-          ...dragMiddlewares
         )
       )
     );

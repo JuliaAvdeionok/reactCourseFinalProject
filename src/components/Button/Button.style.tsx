@@ -17,7 +17,7 @@ export default (theme: Theme) => ({
             backgroundColor: theme.palette.primary.contrastText,
             color: theme.palette.primary.base,
             borderColor: theme.palette.primary.contrastText,
-        }
+        },
     },
     content: {},
     disabled: {

@@ -50,7 +50,7 @@ class AddForm extends React.PureComponent<Props & WithStyles<typeof styles>, Sta
               type='text'
               placeholder={this.props.formName}
             />
-            <button className={classes.button}><FaPlus/></button>
+            <button className={classes.formButton}><FaPlus/></button>
         </form>;
     }
 }

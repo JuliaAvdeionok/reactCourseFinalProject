@@ -48,8 +48,11 @@ export const black: PaletteColor = {
 export const sea: PaletteColor = {
   base: '#fafafa',
   light: '#f5e1da',
+  // light: '#fdf6f6',
+  // main: '#a5e9e1',
   main: '#f1f1f1',
-  dark: '#476268',
+  dark: '#2e2b2b',
+  // dark: '#476268',
   text: '#171717',
-  contrastText: '#40a798',
+  contrastText: '#388186',
 };

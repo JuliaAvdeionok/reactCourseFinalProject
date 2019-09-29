@@ -4,16 +4,17 @@ export default (theme: Theme) => ({
     root: {
         background: theme.palette.primary.main,
     },
-    container: {
-        maxWidth: 960,
-        margin: '0 auto'
-    },
     grid: {
+        maxWidth: 960,
+        margin: '0 auto',
         padding: '10px 10px'
+    },
+    boardHeader: {
+        display: 'grid',
+        gridTemplateColumns: '1fr 200px'
     },
     signInLinkWrapper: {
         width: '100%',
-        display: 'flex',
         justifyContent: 'center'
     },
     signInLink: {
@@ -23,7 +24,6 @@ export default (theme: Theme) => ({
     boardList: {
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fill, minmax(300px,1fr))',
-        gridGap: '0 10px',
     },
     addForm: {
 

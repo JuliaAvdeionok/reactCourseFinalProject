@@ -10,7 +10,7 @@ export default (theme: Theme) => ({
     },
     signInLinkWrapper: {
         width: '100%',
-        display: 'flex',
+        // display: 'flex',
         justifyContent: 'center'
     },
     signInLink: {

@@ -7,7 +7,6 @@ import { Page } from '../Page';
 import { PATHS } from '../App/App.paths';
 import { Link } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
-import { CardWrapper } from '../CardWrapper';
 import { AddForm } from '../ToDoForm';
 
 class Home extends React.PureComponent<StateProps & DispatchProps & RouteComponentProps & WithStyles<typeof styles>> {
@@ -23,9 +22,11 @@ class Home extends React.PureComponent<StateProps & DispatchProps & RouteCompone
         const {classes} = this.props;
         return <Page title={'CLONE TRELLO|HOME'}>
             <div className={classes.container}>
-                <h2>Hello user</h2>
                 <div className={classes.addForm}>
                     <AddForm formName={'Add new board'} onAddItem={this.props.onAddBoard}/>
+                </div>
+                <div className={classes.heading}>
+                    <h3>Your board list:</h3>
                 </div>
                 <div className={classes.boardList}>
                     {this.renderBoardList()}
@@ -35,11 +36,13 @@ class Home extends React.PureComponent<StateProps & DispatchProps & RouteCompone
     }
 
     private renderBoardList = () => {
+        const {classes} = this.props;
         return this.props.member.map(board => {
               const link = `${PATHS.BOARD}/${board.id}`;
-              return <CardWrapper key={uuid()}>
-                  <Link key={uuid()} to={link}>{board.name}</Link>;
-              </CardWrapper>;
+              return <div key={uuid()} className={classes.boardListItem}>
+                  <Link className={classes.linkButton} key={uuid()} to={link}>{board.name}</Link>
+              </div>;
+
           }
         );
     };

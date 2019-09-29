@@ -15,10 +15,8 @@ class Card
     public render() {
         const {classes, cardItem, isDragging} = this.props;
         return <div className={isDragging ? classes.cardWrapperColorDregged : classes.cardWrapperColor}>
-            <div> id:{cardItem.id} </div>
             <div> Name: {cardItem.name} </div>
             <div> idList: {cardItem.idList} </div>
-            <div> pos: {cardItem.pos} </div>
         </div>;
     }
 

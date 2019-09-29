@@ -69,7 +69,7 @@ class Board extends React.PureComponent<StateProps & DispatchProps & RouteCompon
         return <Page title={'CLONE TRELLO|BOARD'}>
             <DragDropContext onDragEnd={this.onDragEnd}>
                 <div className={classes.grid}>
-                    <div>
+                    <div className={classes.boardHeader}>
                         <h2>{boardName}</h2>
                         <Button onClick={this.deleteBoard}><FaTrash/>Detele this board</Button>
                     </div>

@@ -7,10 +7,14 @@ import { v4 as uuid } from 'uuid';
 import { Card } from '../Card';
 import { Action } from '../../store/types';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
-import { delTrelloList } from '../../store/trelloList';
+import { addTrelloList, delTrelloList } from '../../store/trelloList';
 import { getCardListById } from '../../store/trelloList/selectors';
 import { AppState } from '../../store';
 import { connect } from 'react-redux';
+import { Button } from '../Button';
+import { FaTrash } from 'react-icons/all';
+import { AddForm } from '../ToDoForm';
+import { ToAddModel } from '../../models/ToAddModel';
 
 export interface TrelloListProps {
     id: string;
@@ -25,6 +29,7 @@ interface StateProps {
 
 interface DispatchProps {
     onDelTrelloList: (listId: string) => void;
+    onAddCard: (newItem: ToAddModel) => void;
 }
 
 class TrelloList extends React.PureComponent<TrelloListProps & StateProps & DispatchProps & WithStyles<typeof styles>> {
@@ -34,14 +39,19 @@ class TrelloList extends React.PureComponent<TrelloListProps & StateProps & Disp
         return <Droppable className={classes.cardList} droppableId={this.props.id}>
             {(provided, snapshot) => (
               <div className={snapshot.isDraggingOver ? classes.listDreggedOver : classes.listContainer}
-                {...provided.droppableProps}
-                ref={provided.innerRef}>
+                   {...provided.droppableProps}
+                   ref={provided.innerRef}>
                   {
                       <div className={classes.listWrapper}>
                           <h2> {this.props.name} </h2>
                           {this.renderCardList()}
+                          <div className={classes.addForm}>
+                              <AddForm formName={'Add new card'}
+                                       onAddItem={this.props.onAddCard}
+                                       parentId={this.props.id}/>
+                          </div>
                           <div className={classes.delButton}>
-                              {/*<Button onClick={this.deleteTrelloList}><FaTrash/>Del list</Button>*/}
+                              <Button onClick={this.deleteTrelloList}><FaTrash/>Del list</Button>
                           </div>
                       </div>}
                   {provided.placeholder}
@@ -63,7 +73,14 @@ class TrelloList extends React.PureComponent<TrelloListProps & StateProps & Disp
                             ref={provided.innerRef}
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}>
-                              <Card key={uuid()} cardItem={item} index={index} isDragging={snapshot.isDagged}/>
+                              <div className={classes.cardWrapper}>
+                                  <div className={classes.cardBlock}>
+                                      <Card key={uuid()} cardItem={item} index={index} isDragging={snapshot.isDagged}/>
+                                  </div>
+                                  {/*<div  className={classes.cardBlock}>*/}
+                                      <Button onClick={this.deleteTrelloList}><FaTrash/></Button>
+                                  {/*</div>*/}
+                              </div>
                           </div>
                         )}
                     </Draggable>;
@@ -87,6 +104,7 @@ const mapStateToProps = (state: AppState, ownProps: TrelloListProps): StateProps
 
 const mapDispatchToProps = (dispatch: Dispatch<Action<any>>) => ({
     onDelTrelloList: (listId: string) => dispatch(delTrelloList(listId)),
+    onAddCard: (newItem: ToAddModel) => dispatch(addTrelloList(newItem)),
 });
 
 const WrappedWithStylesComponent = withStyles(styles)(TrelloList);
